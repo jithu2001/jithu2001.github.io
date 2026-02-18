@@ -9,6 +9,8 @@ let riverMesh, mistParticles;
 let targetCamX = 0, targetCamY = 8, camRotX = 0, camRotY = 0;
 let keys = {};
 let isExploring = false;
+const isMobile = /Android|iPhone|iPad|iPod|webOS|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth < 768;
+let touchJoystick = { active: false, startX: 0, startY: 0, dx: 0, dy: 0 };
 
 function init() {
   clock = new THREE.Clock();
@@ -23,9 +25,11 @@ function init() {
   const canvas = document.getElementById('scene-canvas');
   renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
   renderer.setSize(innerWidth, innerHeight);
-  renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
-  renderer.shadowMap.enabled = true;
-  renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+  renderer.setPixelRatio(Math.min(devicePixelRatio, isMobile ? 1.5 : 2));
+  renderer.shadowMap.enabled = !isMobile;
+  if (!isMobile) {
+    renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+  }
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
   renderer.toneMappingExposure = 0.9;
 
@@ -47,6 +51,9 @@ function init() {
   addEventListener('scroll', onScroll);
   addEventListener('keydown', e => { keys[e.key.toLowerCase()] = true; isExploring = true; });
   addEventListener('keyup', e => keys[e.key.toLowerCase()] = false);
+
+  // Joystick controls (shown on narrow screens via CSS)
+  setupTouchControls();
 
   animate();
 }
@@ -186,9 +193,9 @@ function createMountains() {
   });
 }
 
-// ---- TEXTURED GROUND ----
+// ---- GROUND ----
 function createGround() {
-  const geo = new THREE.PlaneGeometry(250, 120, 100, 50);
+  const geo = new THREE.PlaneGeometry(350, 200, isMobile ? 60 : 100, isMobile ? 30 : 50);
   const pos = geo.attributes.position.array;
   for (let i = 0; i < pos.length; i += 3) {
     pos[i + 2] += (Math.random() - 0.5) * 0.6;
@@ -203,9 +210,10 @@ function createGround() {
   ground.receiveShadow = true;
   scene.add(ground);
 
-  // Grass patches (small green triangles)
-  for (let i = 0; i < 200; i++) {
-    const gx = (Math.random() - 0.5) * 80, gz = Math.random() * 30 - 5;
+  // Grass patches
+  const grassCount = isMobile ? 150 : 350;
+  for (let i = 0; i < grassCount; i++) {
+    const gx = (Math.random() - 0.5) * 140, gz = Math.random() * 60 - 15;
     const gh = 0.3 + Math.random() * 0.5;
     const grass = new THREE.Mesh(
       new THREE.ConeGeometry(0.05, gh, 4),
@@ -315,18 +323,28 @@ function createTree(x, y, z, scale, type) {
 
 function createTrees() {
   const types = ['normal', 'normal', 'normal', 'tall', 'tall', 'dead'];
-  for (let i = 0; i < 80; i++) {
-    const x = (Math.random() - 0.5) * 100;
-    const z = Math.random() * -35 + 8;
-    const scale = 0.5 + Math.random() * 1.3;
+  const treeCount = isMobile ? 100 : 160;
+  for (let i = 0; i < treeCount; i++) {
+    const x = (Math.random() - 0.5) * 160;
+    const z = Math.random() * -60 + 15;
+    const scale = 0.4 + Math.random() * 1.4;
     if (Math.abs(x) < 5 && z > 2 && z < 12) continue; // Clear campfire area
     const type = types[Math.floor(Math.random() * types.length)];
     createTree(x, -0.5, z, scale, type);
   }
   // Dense foreground edges
-  for (let i = 0; i < 15; i++) {
+  const edgeCount = isMobile ? 12 : 25;
+  for (let i = 0; i < edgeCount; i++) {
     const side = i % 2 === 0 ? -1 : 1;
-    createTree(side * (18 + Math.random() * 35), -0.5, 8 + Math.random() * 18, 1 + Math.random() * 0.8, 'tall');
+    createTree(side * (15 + Math.random() * 50), -0.5, 5 + Math.random() * 22, 0.8 + Math.random() * 1.0, 'tall');
+  }
+  // Deep background trees for density
+  if (!isMobile) {
+    for (let i = 0; i < 40; i++) {
+      const x = (Math.random() - 0.5) * 180;
+      const z = -45 + Math.random() * -30;
+      createTree(x, -0.5, z, 0.6 + Math.random() * 1.2, types[Math.floor(Math.random() * types.length)]);
+    }
   }
 }
 
@@ -561,6 +579,118 @@ function handleKeys() {
   if (keys['d'] || keys['arrowright']) camera.position.x += speed;
   if (keys['q']) camera.position.y += speed * 0.5;
   if (keys['e']) camera.position.y -= speed * 0.5;
+
+  // Mobile touch joystick movement
+  if (touchJoystick.active) {
+    isExploring = true;
+    camera.position.x += touchJoystick.dx * speed * 0.4;
+    camera.position.z -= touchJoystick.dy * speed * 0.4;
+  }
+}
+
+// ---- MOBILE TOUCH CONTROLS ----
+function setupTouchControls() {
+  // Create on-screen joystick
+  const joystickContainer = document.createElement('div');
+  joystickContainer.id = 'touch-joystick';
+  joystickContainer.innerHTML = `
+    <div class="joystick-base">
+      <div class="joystick-thumb"></div>
+    </div>
+    <div class="joystick-label">Drag to explore</div>
+  `;
+  document.body.appendChild(joystickContainer);
+
+  // Add joystick styles
+  const style = document.createElement('style');
+  style.textContent = `
+    #touch-joystick {
+      position: fixed; bottom: 30px; left: 30px; z-index: 1000;
+      pointer-events: auto; touch-action: none;
+    }
+    .joystick-base {
+      width: 100px; height: 100px; border-radius: 50%;
+      background: rgba(74, 222, 128, 0.12);
+      border: 2px solid rgba(74, 222, 128, 0.3);
+      display: flex; align-items: center; justify-content: center;
+      backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px);
+    }
+    .joystick-thumb {
+      width: 40px; height: 40px; border-radius: 50%;
+      background: rgba(74, 222, 128, 0.4);
+      border: 2px solid rgba(74, 222, 128, 0.6);
+      transition: transform 0.05s ease-out;
+    }
+    .joystick-label {
+      text-align: center; margin-top: 8px;
+      font-size: 11px; color: rgba(74, 222, 128, 0.5);
+      font-family: 'Inter', sans-serif; letter-spacing: 0.5px;
+    }
+    @media (min-width: 769px) { #touch-joystick { display: none; } }
+  `;
+  document.head.appendChild(style);
+
+  const base = joystickContainer.querySelector('.joystick-base');
+  const thumb = joystickContainer.querySelector('.joystick-thumb');
+  const maxDist = 30;
+
+  base.addEventListener('touchstart', (e) => {
+    e.preventDefault();
+    const rect = base.getBoundingClientRect();
+    touchJoystick.active = true;
+    touchJoystick.startX = rect.left + rect.width / 2;
+    touchJoystick.startY = rect.top + rect.height / 2;
+  }, { passive: false });
+
+  base.addEventListener('touchmove', (e) => {
+    e.preventDefault();
+    if (!touchJoystick.active) return;
+    const touch = e.touches[0];
+    let dx = touch.clientX - touchJoystick.startX;
+    let dy = touch.clientY - touchJoystick.startY;
+    const dist = Math.sqrt(dx * dx + dy * dy);
+    if (dist > maxDist) { dx = dx / dist * maxDist; dy = dy / dist * maxDist; }
+    thumb.style.transform = `translate(${dx}px, ${dy}px)`;
+    touchJoystick.dx = dx / maxDist;
+    touchJoystick.dy = -dy / maxDist;
+  }, { passive: false });
+
+  const endInteraction = () => {
+    touchJoystick.active = false;
+    touchJoystick.dx = 0;
+    touchJoystick.dy = 0;
+    thumb.style.transform = 'translate(0, 0)';
+  };
+  base.addEventListener('touchend', endInteraction);
+  base.addEventListener('touchcancel', endInteraction);
+
+  // Mouse events (for testing on desktop with resized window)
+  base.addEventListener('mousedown', (e) => {
+    e.preventDefault();
+    const rect = base.getBoundingClientRect();
+    touchJoystick.active = true;
+    touchJoystick.startX = rect.left + rect.width / 2;
+    touchJoystick.startY = rect.top + rect.height / 2;
+  });
+
+  window.addEventListener('mousemove', (e) => {
+    if (!touchJoystick.active) return;
+    let dx = e.clientX - touchJoystick.startX;
+    let dy = e.clientY - touchJoystick.startY;
+    const dist = Math.sqrt(dx * dx + dy * dy);
+    if (dist > maxDist) { dx = dx / dist * maxDist; dy = dy / dist * maxDist; }
+    thumb.style.transform = `translate(${dx}px, ${dy}px)`;
+    touchJoystick.dx = dx / maxDist;
+    touchJoystick.dy = -dy / maxDist;
+  });
+
+  window.addEventListener('mouseup', endInteraction);
+
+  // Update hint text on narrow screens
+  if (isMobile) {
+    const hint = document.querySelector('.explore-hint');
+    if (hint) hint.innerHTML = '👆 Use the joystick to explore the forest';
+  }
 }
 
 // ---- ANIMATION LOOP ----
