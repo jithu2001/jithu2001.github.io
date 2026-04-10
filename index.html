@@ -1,433 +1,898 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html class="dark" lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Jithu J George — Software Engineer</title>
-    <meta name="description"
-        content="Portfolio of Jithu J George — Software Engineer specializing in Backend Development, Machine Learning, and Computer Vision.">
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <style>
-        .explore-hint {
-            margin-top: 28px;
-            font-size: 13px;
-            color: var(--text-secondary);
-            letter-spacing: 0.5px;
-            opacity: 0.7;
-            animation: hintPulse 3s ease-in-out infinite;
-        }
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <title>Jithu J George | Backend Engineer & Systems Architect</title>
+  <meta name="description" content="Portfolio of Jithu J George — Backend Engineer specializing in Golang, distributed systems, and real-time applications. Based in Kerala, India."/>
+  <meta property="og:title" content="Jithu J George | Backend Engineer"/>
+  <meta property="og:description" content="Backend Engineer specializing in Golang, distributed systems, and real-time applications."/>
+  <meta property="og:type" content="website"/>
 
-        .explore-hint kbd {
-            display: inline-block;
-            padding: 2px 8px;
-            margin: 0 2px;
-            border-radius: 4px;
-            font-size: 12px;
-            font-family: 'Inter', sans-serif;
-            background: rgba(74, 222, 128, 0.15);
-            border: 1px solid rgba(74, 222, 128, 0.3);
-            color: var(--accent-green);
-            font-weight: 600;
-        }
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 
-        @keyframes hintPulse {
+  <!-- Google Fonts: Space Grotesk + Inter -->
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
 
-            0%,
-            100% {
-                opacity: 0.5;
-            }
+  <!-- Material Symbols -->
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
 
-            50% {
-                opacity: 0.9;
-            }
-        }
-    </style>
+  <!-- Tailwind Design-System Config -->
+  <script>
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "background":                  "#131313",
+            "surface":                     "#131313",
+            "surface-dim":                 "#131313",
+            "surface-container-lowest":    "#0e0e0e",
+            "surface-container-low":       "#1b1c1c",
+            "surface-container":           "#202020",
+            "surface-container-high":      "#2a2a2a",
+            "surface-container-highest":   "#353535",
+            "surface-bright":              "#393939",
+            "on-surface":                  "#e5e2e1",
+            "on-surface-variant":          "#c1c8c1",
+            "on-background":               "#e5e2e1",
+            "primary":                     "#a3d1b5",
+            "primary-container":           "#729e84",
+            "primary-fixed":               "#bfedd0",
+            "primary-fixed-dim":           "#a3d1b5",
+            "on-primary":                  "#0a3824",
+            "on-primary-container":        "#063421",
+            "secondary":                   "#c6c6c7",
+            "secondary-container":         "#454747",
+            "on-secondary":                "#2f3131",
+            "on-secondary-container":      "#b4b5b5",
+            "outline":                     "#8b938c",
+            "outline-variant":             "#414943",
+            "error":                       "#ffb4ab",
+            "inverse-surface":             "#e5e2e1",
+            "inverse-on-surface":          "#303030",
+            "inverse-primary":             "#3d6750",
+            "surface-tint":                "#a3d1b5",
+          },
+          borderRadius: {
+            DEFAULT:  "0.125rem",
+            sm:       "0.125rem",
+            lg:       "0.25rem",
+            xl:       "0.5rem",
+            "2xl":    "1rem",
+            full:     "9999px",
+          },
+          fontFamily: {
+            headline: ["Space Grotesk", "sans-serif"],
+            body:     ["Inter", "sans-serif"],
+            label:    ["Inter", "sans-serif"],
+            mono:     ["'Fira Code'", "monospace"],
+          },
+        },
+      },
+    };
+  </script>
+
+  <link rel="stylesheet" href="style.css"/>
 </head>
 
-<body>
+<body class="bg-background text-on-background font-body antialiased">
 
-    <canvas id="scene-canvas"></canvas>
+  <!-- ═══════════════════════ TOP NAV ═══════════════════════ -->
+  <nav id="navbar" class="fixed top-0 w-full z-50 transition-all duration-300">
+    <div class="max-w-7xl mx-auto px-6 md:px-8">
+      <div class="flex items-center justify-between py-5 md:py-6">
 
-    <div id="content-overlay">
+        <!-- Logo -->
+        <a href="#hero" class="font-headline text-lg md:text-xl font-bold tracking-tighter text-on-background hover:text-primary transition-colors duration-300">
+          JITHU J GEORGE
+        </a>
 
-        <!-- NAV -->
-        <nav>
-            <div class="nav-logo">JG</div>
-            <input type="checkbox" id="nav-toggle" class="nav-toggle" hidden>
-            <label for="nav-toggle" class="hamburger"><span></span><span></span><span></span></label>
-            <ul class="nav-links">
-                <li><a href="#hero">Home</a></li>
-                <li><a href="#about">About</a></li>
-                <li><a href="#skills">Skills</a></li>
-                <li><a href="#experience">Experience</a></li>
-                <li><a href="#projects">Projects</a></li>
-                <li><a href="#education">Education</a></li>
-                <li><a href="#contact">Contact</a></li>
-            </ul>
-        </nav>
+        <!-- Desktop Links -->
+        <div class="hidden md:flex items-center gap-8 lg:gap-10 font-headline text-sm tracking-tight">
+          <a class="nav-link text-secondary hover:text-on-background transition-all duration-300 hover:-translate-y-0.5" href="#work">Work</a>
+          <a class="nav-link text-secondary hover:text-on-background transition-all duration-300 hover:-translate-y-0.5" href="#expertise">About</a>
+          <a class="nav-link text-secondary hover:text-on-background transition-all duration-300 hover:-translate-y-0.5" href="#experience">Experience</a>
+          <a class="nav-link text-secondary hover:text-on-background transition-all duration-300 hover:-translate-y-0.5" href="#systems">Skills</a>
+          <a class="nav-link text-secondary hover:text-on-background transition-all duration-300 hover:-translate-y-0.5" href="#education">Education</a>
+        </div>
 
-        <!-- HERO -->
-        <section id="hero" class="section">
-            <div class="hero-inner reveal">
-                <p class="hero-greeting">✦ Welcome to my forest</p>
-                <h1 class="hero-name">Jithu J George</h1>
-                <p class="hero-title">Software Engineer · Backend Development · Distributed Systems · Real-Time
-                    Applications</p>
-                <div class="hero-btns">
-                    <a href="#contact" class="btn btn-primary">Get In Touch</a>
-                    <a href="#projects" class="btn btn-outline">View My Work</a>
-                </div>
-                <p class="explore-hint">🎮 Use <kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd> to explore the forest ·
-                    <kbd>Q</kbd><kbd>E</kbd> to fly
-                </p>
-            </div>
-        </section>
-
-        <!-- ABOUT -->
-        <section id="about" class="section">
-            <div class="section-inner reveal">
-                <p class="section-subtitle">Who I Am</p>
-                <h2 class="section-title">About Me</h2>
-                <div class="glass">
-                    <div class="about-text">
-                        <p>I'm a backend-focused <span class="highlight">Software Engineer</span> specializing in <span
-                                class="highlight">Golang, distributed systems, and real-time applications</span>. I
-                            enjoy designing clean, scalable APIs, building concurrent systems, and solving
-                            performance-critical problems.</p>
-                        <p>I have hands-on experience building production systems using <span class="highlight">Go,
-                                PostgreSQL, WebSockets, Linux, and cloud services</span>, along with experience in
-                            embedded AI systems and real-time analytics pipelines. I'm particularly interested in <span
-                                class="highlight">system design, concurrency patterns, and backend architecture</span>.
-                        </p>
-                        <p>I focus on writing simple, reliable, and maintainable backend systems that scale.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- SKILLS -->
-        <section id="skills" class="section">
-            <div class="section-inner reveal">
-                <p class="section-subtitle">What I Know</p>
-                <h2 class="section-title">Technical Skills</h2>
-                <div class="skills-grid">
-
-                    <div class="glass skill-category">
-                        <h3><i class="fas fa-code"></i> Languages</h3>
-                        <div class="skill-tags">
-                            <span class="skill-tag">Golang</span>
-                            <span class="skill-tag">C++</span>
-                            <span class="skill-tag">Python</span>
-                            <span class="skill-tag">SQL</span>
-                            <span class="skill-tag">Dart</span>
-                        </div>
-                    </div>
-
-                    <div class="glass skill-category">
-                        <h3><i class="fas fa-layer-group"></i> Frameworks & Tools</h3>
-                        <div class="skill-tags">
-                            <span class="skill-tag">Qt (Qt5/Qt6)</span>
-                            <span class="skill-tag">Django</span>
-                            <span class="skill-tag">Flutter</span>
-                            <span class="skill-tag">OpenCV</span>
-                            <span class="skill-tag">Gin</span>
-                            <span class="skill-tag">Gorilla Web Toolkit</span>
-                        </div>
-                    </div>
-
-                    <div class="glass skill-category">
-                        <h3><i class="fas fa-brain"></i> ML & AI</h3>
-                        <div class="skill-tags">
-                            <span class="skill-tag">YOLOv5</span>
-                            <span class="skill-tag">Computer Vision</span>
-                            <span class="skill-tag">TensorRT</span>
-                            <span class="skill-tag">Model Training</span>
-                        </div>
-                    </div>
-
-                    <div class="glass skill-category">
-                        <h3><i class="fas fa-cloud"></i> Cloud & DevOps</h3>
-                        <div class="skill-tags">
-                            <span class="skill-tag">AWS (SES, EC2)</span>
-                            <span class="skill-tag">GCP</span>
-                            <span class="skill-tag">Jenkins</span>
-                            <span class="skill-tag">Git</span>
-                            <span class="skill-tag">Jira</span>
-                        </div>
-                    </div>
-
-                    <div class="glass skill-category">
-                        <h3><i class="fas fa-database"></i> Databases</h3>
-                        <div class="skill-tags">
-                            <span class="skill-tag">PostgreSQL</span>
-                            <span class="skill-tag">SQLite</span>
-                            <span class="skill-tag">Firebase</span>
-                        </div>
-                    </div>
-
-                    <div class="glass skill-category">
-                        <h3><i class="fas fa-microchip"></i> Embedded & Other</h3>
-                        <div class="skill-tags">
-                            <span class="skill-tag">Linux</span>
-                            <span class="skill-tag">WebSockets</span>
-                            <span class="skill-tag">SSH</span>
-                            <span class="skill-tag">Jetson</span>
-                            <span class="skill-tag">Rockchip</span>
-                            <span class="skill-tag">PLC (Modbus)</span>
-                        </div>
-                    </div>
-
-                    <div class="glass skill-category">
-                        <h3><i class="fas fa-wand-magic-sparkles"></i> AI Coding Tools</h3>
-                        <div class="skill-tags">
-                            <span class="skill-tag">Claude Code</span>
-                            <span class="skill-tag">Antigravity</span>
-                            <span class="skill-tag">Cursor</span>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-        </section>
-
-        <!-- EXPERIENCE -->
-        <section id="experience" class="section">
-            <div class="section-inner">
-                <div class="reveal">
-                    <p class="section-subtitle">My Journey</p>
-                    <h2 class="section-title">Work Experience</h2>
-                </div>
-                <div class="timeline">
-
-                    <!-- Freelance -->
-                    <div class="timeline-item">
-                        <div class="timeline-dot"></div>
-                        <div class="glass timeline-card">
-                            <h3>Freelance Developer</h3>
-                            <h4>Independent Projects — Remote</h4>
-                            <p class="date">Nov 2025 — Feb 2026</p>
-                            <p class="exp-section-title">Econ — Lodge & Hotel Management System</p>
-                            <ul>
-                                <li>Built a full-stack lodge management system with a Go (Gin) REST API backend using
-                                    clean architecture (handlers → services → repository pattern).</li>
-                                <li>Implemented JWT authentication, GORM ORM with SQLite, and middleware-based CORS and
-                                    authentication handling.</li>
-                                <li>Developed modules for room management, reservation lifecycle
-                                    (check-in/check-out/cancel), customer records, and GST-compliant billing.</li>
-                                <li>Packaged React frontend as an embedded static asset inside a single Go binary for
-                                    zero-dependency deployment via Electron.</li>
-                            </ul>
-                        </div>
-                    </div>
-
-                    <!-- Perleybrook Labs -->
-                    <div class="timeline-item">
-                        <div class="timeline-dot"></div>
-                        <div class="glass timeline-card">
-                            <h3>Software Engineer</h3>
-                            <h4>Perleybrook Labs Pvt Ltd — Kerala, India</h4>
-                            <p class="date">Aug 2023 — Nov 2025</p>
-
-                            <p class="exp-section-title">Backend Development (Golang)</p>
-                            <ul>
-                                <li>Designed scalable backend services and data pipelines, improving system reliability
-                                    and debugging efficiency.</li>
-                                <li>Developed secure SSH-enabled modules for remote diagnostics and Linux command
-                                    execution.</li>
-                                <li>Implemented WebSocket communication for low-latency data streaming between frontend
-                                    and backend.</li>
-                                <li>Optimized PostgreSQL queries and stored procedures for reporting and analytics.</li>
-                            </ul>
-
-                            <p class="exp-section-title">Product Development (Qt, C++, Django)</p>
-                            <ul>
-                                <li>Built real-time object detection modules in Qt (C++) with spatial-temporal event
-                                    triggers.</li>
-                                <li>Migrated framework from Qt5 to Qt6, improving performance by 10% on a 50K+ line
-                                    codebase.</li>
-                                <li>Developed REST APIs with Django for client-facing dashboards.</li>
-                                <li>Integrated AWS SES, automating 100+ daily client notifications.</li>
-                                <li>Engineered industrial PLC (Modbus, Siemens LOGO!) integrations.</li>
-                                <li>Worked on SDK integrations for embedded AI platforms (Jetson, Rockchip).</li>
-                            </ul>
-
-                            <p class="exp-section-title">Machine Learning & Model Training</p>
-                            <ul>
-                                <li>Fine-tuned YOLOv5 models for PPE compliance, vehicle detection, and activity
-                                    recognition using 20K–100K+ image datasets.</li>
-                                <li>Built reproducible ML pipelines for data preprocessing, training, evaluation, and
-                                    deployment.</li>
-                                <li>Applied TensorRT / FP16 quantization to accelerate inference on Jetson edge devices.
-                                </li>
-                            </ul>
-
-                            <p class="exp-section-title">Client Interaction & Deployment</p>
-                            <ul>
-                                <li>Led end-to-end deployment at 5+ sites including Coca-Cola, ITC, Saint-Gobain,
-                                    Unilever, Godrej, Hyundai, and Kia — 99% uptime.</li>
-                                <li>Delivered 10+ client training sessions driving 100% adoption of AI dashboards.</li>
-                            </ul>
-                        </div>
-                    </div>
-
-                    <!-- JPMorgan -->
-                    <div class="timeline-item">
-                        <div class="timeline-dot"></div>
-                        <div class="glass timeline-card">
-                            <h3>Excel Skills Virtual Experience</h3>
-                            <h4>JPMorgan Chase & Co. (Forage)</h4>
-                            <p class="date">2023</p>
-                            <ul>
-                                <li>Completed a structured program focused on financial data analysis and Excel
-                                    automation.</li>
-                            </ul>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-        </section>
-
-        <!-- PROJECTS -->
-        <section id="projects" class="section">
-            <div class="section-inner reveal">
-                <p class="section-subtitle">What I've Built</p>
-                <h2 class="section-title">Projects</h2>
-                <div class="projects-grid">
-
-                    <div class="glass project-card">
-                        <div class="project-icon"><i class="fas fa-cloud"></i></div>
-                        <h3>Cloud-Jazzz</h3>
-                        <p>Self-hosted cloud storage server in Go with RESTful APIs, JWT authentication (HMAC-SHA256),
-                            SQLite with WAL mode, chunked file uploads, and video streaming via HTTP Range requests.
-                            Single-binary deployment using go:embed.</p>
-                        <div class="project-tech">
-                            <span>Go</span><span>Chi</span><span>SQLite</span><span>JWT</span><span>REST API</span>
-                        </div>
-                    </div>
-
-                    <div class="glass project-card">
-                        <div class="project-icon"><i class="fas fa-hotel"></i></div>
-                        <h3>Econ — Lodge Management</h3>
-                        <p>Full-stack lodge management system with Go (Gin) REST API, JWT auth, GORM ORM,
-                            room/reservation management, GST-compliant billing, and React frontend embedded in a single
-                            Go binary via Electron.</p>
-                        <div class="project-tech">
-                            <span>Go</span><span>Gin</span><span>React</span><span>SQLite</span><span>Electron</span>
-                        </div>
-                    </div>
-
-                    <div class="glass project-card">
-                        <div class="project-icon"><i class="fas fa-video"></i></div>
-                        <h3>Smart Surveillance System</h3>
-                        <p>Face detection system using OpenCV DNN, integrated with a Flutter mobile app via Firebase.
-                            Secure door unlocking with Raspberry Pi and Python-based control system.</p>
-                        <div class="project-tech">
-                            <span>Flutter</span><span>OpenCV</span><span>Python</span><span>Firebase</span><span>Raspberry
-                                Pi</span>
-                        </div>
-                    </div>
-
-                    <div class="glass project-card">
-                        <div class="project-icon"><i class="fas fa-music"></i></div>
-                        <h3>Music Player</h3>
-                        <p>Cross-platform cloud-based music player built with Flutter and AWS integration. Seamless
-                            playback of cloud-stored songs with elegant UI.</p>
-                        <div class="project-tech">
-                            <span>Flutter</span><span>Dart</span><span>AWS</span>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-        </section>
-
-        <!-- EDUCATION -->
-        <section id="education" class="section">
-            <div class="section-inner reveal">
-                <p class="section-subtitle">My Background</p>
-                <h2 class="section-title">Education</h2>
-                <div class="edu-grid">
-                    <div class="glass edu-card">
-                        <h3>B.E — Computer Science and Engineering</h3>
-                        <h4>Sathyabama Institute of Science and Technology</h4>
-                        <p>2019 — 2023 · Chennai, India</p>
-                        <span class="grade">CGPA: 8.57</span>
-                    </div>
-                    <div class="glass edu-card">
-                        <h3>Class XII (CBSE)</h3>
-                        <h4>St. Antony's Public School</h4>
-                        <p>2017 — 2019 · Anakkal, India</p>
-                        <span class="grade">74.4%</span>
-                    </div>
-                    <div class="glass edu-card">
-                        <h3>Class X (CBSE)</h3>
-                        <h4>St. Antony's Public School</h4>
-                        <p>2017 · Anakkal, India</p>
-                        <span class="grade">CGPA: 9.0</span>
-                    </div>
-                </div>
-
-                <!-- Certifications -->
-                <div style="margin-top:50px">
-                    <h3 style="font-size:20px;color:var(--accent-green);margin-bottom:8px">Certifications & Languages
-                    </h3>
-                    <div class="cert-row">
-                        <div class="cert-item"><i class="fas fa-certificate"></i> Go (Golang) Programming — Udemy (Feb
-                            2026) <br><span style="font-size:11px;opacity:0.7">Credential ID:
-                                UC-3424e256-5dac-48e0-8ccf-690576929910</span></div>
-                        <div class="cert-item"><i class="fas fa-certificate"></i> Flutter Framework Training</div>
-                        <div class="cert-item"><i class="fas fa-certificate"></i> Python (Coursera) <br><span
-                                style="font-size:11px;opacity:0.7">Credential ID: RRFX6WN5U5YN</span></div>
-                    </div>
-                    <div class="lang-row" style="margin-top:16px">
-                        <span class="lang-tag">English</span>
-                        <span class="lang-tag">Malayalam</span>
-                        <span class="lang-tag">Hindi</span>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- CONTACT -->
-        <section id="contact" class="section">
-            <div class="section-inner reveal">
-                <p class="section-subtitle">Let's Connect</p>
-                <h2 class="section-title">Contact Me</h2>
-                <div class="glass contact-info" style="max-width:600px;margin:0 auto">
-                    <h3>Get In Touch</h3>
-                    <ul class="contact-list">
-                        <li><i class="fas fa-envelope"></i> <a
-                                href="mailto:jithu10052001@gmail.com">jithu10052001@gmail.com</a></li>
-                        <li><i class="fas fa-phone"></i> <a href="tel:+919847073856">+91 9847073856</a></li>
-                        <li><i class="fas fa-map-marker-alt"></i> Kerala, India</li>
-                        <li><i class="fab fa-github"></i> <a href="https://github.com/jithu2001"
-                                target="_blank">github.com/jithu2001</a></li>
-                        <li><i class="fab fa-linkedin"></i> <a href="https://linkedin.com/in/jithu2001"
-                                target="_blank">linkedin.com/in/jithu2001</a></li>
-                    </ul>
-                </div>
-            </div>
-        </section>
-
-        <!-- FOOTER -->
-        <footer>
-            <div class="social-links">
-                <a href="https://github.com/jithu2001" target="_blank"><i class="fab fa-github"></i></a>
-                <a href="https://linkedin.com/in/jithu2001" target="_blank"><i class="fab fa-linkedin"></i></a>
-            </div>
-            <p>&copy; 2026 Jithu J George. All Rights Reserved.</p>
-            <p style="margin-top:8px;font-size:12px;opacity:0.6">🚀 Built with <span
-                    style="color:var(--accent-green);font-weight:600">Antigravity</span></p>
-        </footer>
-
+        <!-- CTA + Hamburger -->
+        <div class="flex items-center gap-3">
+          <a href="mailto:jithu10052001@gmail.com"
+             class="hidden md:inline-flex items-center gap-2 bg-primary text-on-primary px-5 py-2.5 rounded-lg font-headline font-semibold text-sm transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_8px_24px_rgba(163,209,181,0.25)]">
+            Let's Connect
+          </a>
+          <button id="mobile-menu-btn" aria-label="Toggle menu"
+                  class="md:hidden flex items-center justify-center w-10 h-10 text-on-background rounded-lg hover:bg-surface-container-low transition-colors">
+            <span class="material-symbols-outlined" id="menu-icon">menu</span>
+          </button>
+        </div>
+      </div>
     </div>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    <script src="scene.js"></script>
+    <!-- Mobile Menu -->
+    <div id="mobile-menu"
+         class="mobile-menu-hidden md:hidden bg-surface-container-low/95 backdrop-blur-xl border-t border-outline-variant/10">
+      <div class="max-w-7xl mx-auto px-6 py-6 flex flex-col gap-1 font-headline">
+        <a class="mobile-nav-link py-3 px-4 rounded-lg text-secondary hover:text-on-background hover:bg-surface-container transition-colors" href="#work">Work</a>
+        <a class="mobile-nav-link py-3 px-4 rounded-lg text-secondary hover:text-on-background hover:bg-surface-container transition-colors" href="#expertise">About</a>
+        <a class="mobile-nav-link py-3 px-4 rounded-lg text-secondary hover:text-on-background hover:bg-surface-container transition-colors" href="#experience">Experience</a>
+        <a class="mobile-nav-link py-3 px-4 rounded-lg text-secondary hover:text-on-background hover:bg-surface-container transition-colors" href="#systems">Skills</a>
+        <a class="mobile-nav-link py-3 px-4 rounded-lg text-secondary hover:text-on-background hover:bg-surface-container transition-colors" href="#education">Education</a>
+        <a href="mailto:jithu10052001@gmail.com"
+           class="mt-3 bg-primary text-on-primary px-5 py-3 rounded-lg font-semibold text-sm text-center transition-all duration-300 hover:shadow-[0_8px_24px_rgba(163,209,181,0.2)]">
+          Let's Connect
+        </a>
+      </div>
+    </div>
+  </nav>
+
+
+  <main>
+
+    <!-- ═══════════════════════ HERO ═══════════════════════ -->
+    <section id="hero" class="relative min-h-screen flex items-center justify-center pt-24 overflow-hidden">
+      <div class="grain-overlay"></div>
+
+      <div class="max-w-7xl mx-auto px-6 md:px-8 w-full z-10">
+        <div class="flex flex-col items-center text-center space-y-7 md:space-y-9">
+
+          <!-- Badge -->
+          <span class="reveal font-label text-primary tracking-[0.2em] text-xs uppercase bg-primary/10 px-4 py-1.5 rounded-full border border-primary/20">
+            Systems Engineer &amp; Golang Specialist
+          </span>
+
+          <!-- Big Name -->
+          <h1 class="reveal reveal-delay-1 font-headline font-bold tracking-tighter text-on-background leading-[0.88]
+                     text-[clamp(4rem,15vw,9rem)]">
+            JITHU J<br/>GEORGE
+          </h1>
+
+          <!-- Sub -->
+          <div class="reveal reveal-delay-2 flex flex-col sm:flex-row items-center gap-3 sm:gap-4 text-on-surface-variant">
+            <span class="text-lg md:text-2xl font-light">Backend Developer · Golang Engineer</span>
+            <span class="hidden sm:block w-1.5 h-1.5 rounded-full bg-primary/40"></span>
+            <span class="text-lg md:text-2xl font-light italic">Building scalable, real-time distributed systems.</span>
+          </div>
+
+          <!-- CTAs -->
+          <div class="reveal reveal-delay-3 flex flex-col sm:flex-row items-center gap-4 sm:gap-6 pt-3 w-full sm:w-auto">
+            <a href="#work"
+               class="w-full sm:w-auto text-center bg-primary text-on-primary px-10 py-4 rounded-lg font-headline font-bold text-base
+                      transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_12px_32px_rgba(163,209,181,0.25)]">
+              View Projects
+            </a>
+            <a href="mailto:jithu10052001@gmail.com"
+               class="w-full sm:w-auto text-center border border-outline-variant/30 text-on-background px-10 py-4 rounded-lg
+                      font-headline font-bold text-base transition-all duration-300 hover:bg-surface-container-low hover:-translate-y-0.5">
+              Get in touch
+            </a>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Ambient glows -->
+      <div class="hero-glow pointer-events-none absolute -bottom-32 -right-32 w-[600px] h-[600px] bg-primary/[0.06] blur-[130px] rounded-full"></div>
+      <div class="hero-glow pointer-events-none absolute -top-32 -left-32 w-[450px] h-[450px] bg-primary-container/[0.05] blur-[110px] rounded-full"></div>
+
+      <!-- Scroll indicator -->
+      <div class="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 scroll-indicator">
+        <span class="font-label text-xs uppercase tracking-widest text-outline">Scroll</span>
+        <div class="w-px h-12 bg-gradient-to-b from-outline/60 to-transparent"></div>
+      </div>
+    </section>
+
+
+    <!-- ═══════════════════════ ABOUT ═══════════════════════ -->
+    <section id="expertise" class="py-24 md:py-32 bg-surface-container-low">
+      <div class="max-w-7xl mx-auto px-6 md:px-8 grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-20 items-center">
+
+        <!-- Code Visual (replaces external image) -->
+        <div class="reveal relative group">
+          <div class="absolute -inset-4 bg-primary/5 rounded-2xl transition-all duration-500 group-hover:bg-primary/10"></div>
+          <div class="relative bg-surface-container rounded-xl overflow-hidden shadow-[0_20px_60px_rgba(0,0,0,0.4)]">
+            <!-- Fake terminal bar -->
+            <div class="flex items-center gap-2 px-5 py-4 bg-surface-container-high">
+              <span class="w-3 h-3 rounded-full bg-[#ff5f57]"></span>
+              <span class="w-3 h-3 rounded-full bg-[#febc2e]"></span>
+              <span class="w-3 h-3 rounded-full bg-[#28c840]"></span>
+              <span class="ml-3 font-label text-xs text-outline uppercase tracking-widest">jithu.go</span>
+            </div>
+            <!-- Syntax-highlighted Go code -->
+            <div class="p-6 md:p-8 font-mono text-[13px] md:text-sm leading-7 overflow-x-auto">
+              <p><span class="text-[#729e84]">package</span> <span class="text-on-background">main</span></p>
+              <p>&nbsp;</p>
+              <p><span class="text-[#729e84]">type</span> <span class="text-primary">Engineer</span> <span class="text-secondary">struct</span> <span class="text-on-background">{</span></p>
+              <p class="pl-5"><span class="text-on-background">Name</span>     <span class="text-secondary">string</span></p>
+              <p class="pl-5"><span class="text-on-background">Role</span>     <span class="text-secondary">string</span></p>
+              <p class="pl-5"><span class="text-on-background">Location</span> <span class="text-secondary">string</span></p>
+              <p class="pl-5"><span class="text-on-background">Focus</span>    <span class="text-secondary">[]string</span></p>
+              <p><span class="text-on-background">}</span></p>
+              <p>&nbsp;</p>
+              <p><span class="text-[#729e84]">func</span> <span class="text-primary">New</span><span class="text-on-background">() *</span><span class="text-primary">Engineer</span> <span class="text-on-background">{</span></p>
+              <p class="pl-5"><span class="text-[#729e84]">return</span> <span class="text-on-background">&amp;</span><span class="text-primary">Engineer</span><span class="text-on-background">{</span></p>
+              <p class="pl-10"><span class="text-on-background">Name:     </span><span class="text-primary-fixed">"Jithu J George"</span><span class="text-on-background">,</span></p>
+              <p class="pl-10"><span class="text-on-background">Role:     </span><span class="text-primary-fixed">"Backend Engineer"</span><span class="text-on-background">,</span></p>
+              <p class="pl-10"><span class="text-on-background">Location: </span><span class="text-primary-fixed">"Kerala, India"</span><span class="text-on-background">,</span></p>
+              <p class="pl-10"><span class="text-on-background">Focus: []string{</span></p>
+              <p class="pl-16"><span class="text-primary-fixed">"Golang"</span><span class="text-on-background">,</span></p>
+              <p class="pl-16"><span class="text-primary-fixed">"Distributed Systems"</span><span class="text-on-background">,</span></p>
+              <p class="pl-16"><span class="text-primary-fixed">"Real-time Apps"</span><span class="text-on-background">,</span></p>
+              <p class="pl-16"><span class="text-primary-fixed">"Edge Computing"</span><span class="text-on-background">,</span></p>
+              <p class="pl-10"><span class="text-on-background">},</span></p>
+              <p class="pl-5"><span class="text-on-background">}</span></p>
+              <p><span class="text-on-background">}</span></p>
+              <!-- Blinking cursor -->
+              <p class="mt-2 flex items-center gap-1.5">
+                <span class="text-outline">$</span>
+                <span class="cursor-blink inline-block w-2 h-[1.1em] bg-primary/70 translate-y-[2px]"></span>
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Text Content -->
+        <div class="space-y-9 reveal reveal-delay-1">
+          <h2 class="font-headline text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight">
+            Engineering Excellence.
+          </h2>
+          <p class="text-on-surface-variant text-lg md:text-xl lg:text-2xl leading-relaxed font-light">
+            I'm a <span class="text-primary font-medium">Backend Engineer</span> with a passion for
+            high-performance systems. My expertise spans <span class="text-on-background font-medium">Golang</span>,
+            real-time applications, and embedded AI systems — ensuring reliability and efficiency at scale.
+          </p>
+          <p class="text-on-surface-variant/70 text-base md:text-lg leading-relaxed">
+            Shipped production systems for Coca-Cola, ITC, Saint-Gobain, Unilever, Godrej, Hyundai, and Kia —
+            maintaining <span class="text-on-surface font-medium">99% uptime</span> across enterprise deployments.
+          </p>
+
+          <!-- Stats -->
+          <div class="grid grid-cols-2 gap-6 pt-2">
+            <div>
+              <div class="text-primary font-headline text-3xl md:text-4xl font-bold">Real-time</div>
+              <div class="font-label text-[10px] md:text-xs uppercase tracking-widest text-outline mt-1">Application Focus</div>
+            </div>
+            <div>
+              <div class="text-primary font-headline text-3xl md:text-4xl font-bold">Embedded</div>
+              <div class="font-label text-[10px] md:text-xs uppercase tracking-widest text-outline mt-1">System Design</div>
+            </div>
+            <div>
+              <div class="text-primary font-headline text-3xl md:text-4xl font-bold">5+</div>
+              <div class="font-label text-[10px] md:text-xs uppercase tracking-widest text-outline mt-1">Enterprise Clients</div>
+            </div>
+            <div>
+              <div class="text-primary font-headline text-3xl md:text-4xl font-bold">2+</div>
+              <div class="font-label text-[10px] md:text-xs uppercase tracking-widest text-outline mt-1">Years Professional</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+
+    <!-- ═══════════════════════ SPECIALIZATION STRIP ═══════════════════════ -->
+    <section class="py-16 md:py-20 bg-surface overflow-hidden">
+      <div class="max-w-7xl mx-auto px-6 md:px-8">
+        <div class="border-y border-outline-variant/15 py-8 md:py-12">
+          <div class="flex flex-col md:flex-row items-center justify-between gap-6">
+            <span class="font-label text-primary tracking-[0.3em] uppercase text-xs shrink-0">Specialization</span>
+            <div class="flex flex-wrap justify-center md:justify-end items-center gap-x-8 lg:gap-x-12 gap-y-4
+                        text-on-background font-headline text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-bold uppercase italic">
+              <span>Backend Services</span>
+              <span class="text-outline-variant">•</span>
+              <span>Go Programming</span>
+              <span class="text-outline-variant">•</span>
+              <span>Edge Computing</span>
+              <span class="text-outline-variant">•</span>
+              <span>ML Pipelines</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- ═══════════════════════ PROJECTS ═══════════════════════ -->
+    <section id="work" class="py-24 md:py-32">
+      <div class="max-w-7xl mx-auto px-6 md:px-8">
+
+        <!-- Section header -->
+        <div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-14 md:mb-20 gap-4 reveal">
+          <div class="space-y-3">
+            <h2 class="font-headline text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight">Real-world Systems.</h2>
+            <p class="text-on-surface-variant text-base md:text-xl">From cloud storage to AI-powered surveillance — production-grade code.</p>
+          </div>
+          <a href="https://github.com/jithu2001" target="_blank" rel="noopener noreferrer"
+             class="shrink-0 font-label text-xs uppercase tracking-widest text-primary hover:text-on-background transition-colors flex items-center gap-1.5">
+            All on GitHub
+            <span class="material-symbols-outlined text-sm">arrow_outward</span>
+          </a>
+        </div>
+
+        <!-- Projects Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 lg:gap-12">
+
+          <!-- Cloud-Jazzz -->
+          <div class="project-card group relative bg-surface-container-low rounded-xl p-6 md:p-8
+                      transition-all duration-500 hover:-translate-y-2 hover:shadow-[0_20px_60px_rgba(229,226,225,0.06)] reveal">
+            <div class="flex justify-between items-start mb-8 md:mb-12">
+              <div class="p-3 md:p-4 bg-surface-container-high rounded-lg text-primary">
+                <span class="material-symbols-outlined text-3xl md:text-4xl">cloud_queue</span>
+              </div>
+              <span class="font-label text-xs text-outline uppercase tracking-widest">Go · REST API · Storage</span>
+            </div>
+            <h3 class="font-headline text-2xl md:text-3xl font-bold mb-3 md:mb-4">Cloud-Jazzz</h3>
+            <p class="text-on-surface-variant text-sm md:text-base lg:text-lg leading-relaxed mb-6 md:mb-8">
+              Self-hosted cloud storage server in Go with RESTful APIs, JWT authentication (HMAC-SHA256),
+              SQLite WAL mode, chunked file uploads, and video streaming via HTTP Range requests.
+              Single-binary deployment using <code class="text-primary/80 text-sm">go:embed</code>.
+            </p>
+            <div class="flex flex-wrap gap-2">
+              <span class="chip">Golang</span>
+              <span class="chip">Chi Router</span>
+              <span class="chip">SQLite</span>
+              <span class="chip">JWT</span>
+              <span class="chip">REST API</span>
+            </div>
+            <div class="absolute bottom-6 right-6 md:bottom-8 md:right-8 text-primary
+                        opacity-0 group-hover:opacity-100 transition-all duration-300 translate-x-3 group-hover:translate-x-0">
+              <span class="material-symbols-outlined text-2xl">arrow_outward</span>
+            </div>
+          </div>
+
+          <!-- Econ Lodge -->
+          <div class="project-card group relative bg-surface-container-low rounded-xl p-6 md:p-8
+                      transition-all duration-500 hover:-translate-y-2 hover:shadow-[0_20px_60px_rgba(229,226,225,0.06)] reveal reveal-delay-1">
+            <div class="flex justify-between items-start mb-8 md:mb-12">
+              <div class="p-3 md:p-4 bg-surface-container-high rounded-lg text-primary">
+                <span class="material-symbols-outlined text-3xl md:text-4xl">apartment</span>
+              </div>
+              <span class="font-label text-xs text-outline uppercase tracking-widest">Go · Full-stack · FinTech</span>
+            </div>
+            <h3 class="font-headline text-2xl md:text-3xl font-bold mb-3 md:mb-4">Econ — Lodge Management</h3>
+            <p class="text-on-surface-variant text-sm md:text-base lg:text-lg leading-relaxed mb-6 md:mb-8">
+              Full-stack lodge management system using Go (Gin) with clean architecture
+              (handlers → services → repository). JWT auth, GORM ORM, room &amp; reservation lifecycle,
+              GST-compliant billing. React frontend embedded in a single Go binary via Electron.
+            </p>
+            <div class="flex flex-wrap gap-2">
+              <span class="chip">Go · Gin</span>
+              <span class="chip">React</span>
+              <span class="chip">GORM</span>
+              <span class="chip">SQLite</span>
+              <span class="chip">Electron</span>
+            </div>
+            <div class="absolute bottom-6 right-6 md:bottom-8 md:right-8 text-primary
+                        opacity-0 group-hover:opacity-100 transition-all duration-300 translate-x-3 group-hover:translate-x-0">
+              <span class="material-symbols-outlined text-2xl">arrow_outward</span>
+            </div>
+          </div>
+
+          <!-- Smart Surveillance -->
+          <div class="project-card group relative bg-surface-container-low rounded-xl p-6 md:p-8
+                      transition-all duration-500 hover:-translate-y-2 hover:shadow-[0_20px_60px_rgba(229,226,225,0.06)] reveal reveal-delay-2">
+            <div class="flex justify-between items-start mb-8 md:mb-12">
+              <div class="p-3 md:p-4 bg-surface-container-high rounded-lg text-primary">
+                <span class="material-symbols-outlined text-3xl md:text-4xl">videocam</span>
+              </div>
+              <span class="font-label text-xs text-outline uppercase tracking-widest">Python · Edge · CV</span>
+            </div>
+            <h3 class="font-headline text-2xl md:text-3xl font-bold mb-3 md:mb-4">Smart Surveillance System</h3>
+            <p class="text-on-surface-variant text-sm md:text-base lg:text-lg leading-relaxed mb-6 md:mb-8">
+              Face detection system using OpenCV DNN integrated with a Flutter mobile app via Firebase.
+              Secure door unlocking via Raspberry Pi and Python-based control system for
+              real-time security monitoring.
+            </p>
+            <div class="flex flex-wrap gap-2">
+              <span class="chip">Flutter</span>
+              <span class="chip">OpenCV DNN</span>
+              <span class="chip">Python</span>
+              <span class="chip">Firebase</span>
+              <span class="chip">Raspberry Pi</span>
+            </div>
+            <div class="absolute bottom-6 right-6 md:bottom-8 md:right-8 text-primary
+                        opacity-0 group-hover:opacity-100 transition-all duration-300 translate-x-3 group-hover:translate-x-0">
+              <span class="material-symbols-outlined text-2xl">arrow_outward</span>
+            </div>
+          </div>
+
+          <!-- Cloud Music Player -->
+          <div class="project-card group relative bg-surface-container-low rounded-xl p-6 md:p-8
+                      transition-all duration-500 hover:-translate-y-2 hover:shadow-[0_20px_60px_rgba(229,226,225,0.06)] reveal reveal-delay-3">
+            <div class="flex justify-between items-start mb-8 md:mb-12">
+              <div class="p-3 md:p-4 bg-surface-container-high rounded-lg text-primary">
+                <span class="material-symbols-outlined text-3xl md:text-4xl">music_note</span>
+              </div>
+              <span class="font-label text-xs text-outline uppercase tracking-widest">Flutter · AWS · Mobile</span>
+            </div>
+            <h3 class="font-headline text-2xl md:text-3xl font-bold mb-3 md:mb-4">Cloud Music Player</h3>
+            <p class="text-on-surface-variant text-sm md:text-base lg:text-lg leading-relaxed mb-6 md:mb-8">
+              Cross-platform cloud-based music player built with Flutter and AWS integration.
+              Seamless playback of cloud-stored songs with an elegant, responsive UI designed
+              for both mobile and desktop.
+            </p>
+            <div class="flex flex-wrap gap-2">
+              <span class="chip">Flutter</span>
+              <span class="chip">Dart</span>
+              <span class="chip">AWS</span>
+            </div>
+            <div class="absolute bottom-6 right-6 md:bottom-8 md:right-8 text-primary
+                        opacity-0 group-hover:opacity-100 transition-all duration-300 translate-x-3 group-hover:translate-x-0">
+              <span class="material-symbols-outlined text-2xl">arrow_outward</span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+
+    <!-- ═══════════════════════ SKILLS ═══════════════════════ -->
+    <section id="systems" class="py-24 md:py-32 bg-surface-container-low">
+      <div class="max-w-7xl mx-auto px-6 md:px-8">
+
+        <div class="mb-14 md:mb-20 reveal">
+          <h2 class="font-headline text-4xl md:text-5xl font-bold tracking-tight mb-3">Technical Expertise.</h2>
+          <p class="text-on-surface-variant text-base md:text-lg">The tools and technologies behind my production systems.</p>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 md:gap-12">
+
+          <!-- Languages -->
+          <div class="space-y-5 reveal">
+            <h4 class="font-headline text-lg md:text-2xl font-bold tracking-tight border-l-[3px] border-primary pl-4">Languages</h4>
+            <div class="flex flex-wrap gap-2 md:gap-3">
+              <span class="skill-tag">Golang</span>
+              <span class="skill-tag">C++</span>
+              <span class="skill-tag">Python</span>
+              <span class="skill-tag">SQL</span>
+              <span class="skill-tag">Dart</span>
+            </div>
+          </div>
+
+          <!-- Frameworks -->
+          <div class="space-y-5 reveal reveal-delay-1">
+            <h4 class="font-headline text-lg md:text-2xl font-bold tracking-tight border-l-[3px] border-primary pl-4">Frameworks</h4>
+            <div class="flex flex-wrap gap-2 md:gap-3">
+              <span class="skill-tag">Qt5 / Qt6</span>
+              <span class="skill-tag">Django</span>
+              <span class="skill-tag">Flutter</span>
+              <span class="skill-tag">OpenCV</span>
+              <span class="skill-tag">Gin</span>
+              <span class="skill-tag">Chi</span>
+              <span class="skill-tag">Gorilla</span>
+            </div>
+          </div>
+
+          <!-- Cloud & DevOps -->
+          <div class="space-y-5 reveal reveal-delay-2">
+            <h4 class="font-headline text-lg md:text-2xl font-bold tracking-tight border-l-[3px] border-primary pl-4">Cloud &amp; Ops</h4>
+            <div class="flex flex-wrap gap-2 md:gap-3">
+              <span class="skill-tag">AWS</span>
+              <span class="skill-tag">GCP</span>
+              <span class="skill-tag">Jenkins</span>
+              <span class="skill-tag">Git</span>
+              <span class="skill-tag">Linux</span>
+              <span class="skill-tag">WebSockets</span>
+              <span class="skill-tag">SSH</span>
+            </div>
+          </div>
+
+          <!-- ML & Embedded -->
+          <div class="space-y-5 reveal reveal-delay-3">
+            <h4 class="font-headline text-lg md:text-2xl font-bold tracking-tight border-l-[3px] border-primary pl-4">ML &amp; Embedded</h4>
+            <div class="flex flex-wrap gap-2 md:gap-3">
+              <span class="skill-tag">YOLOv5</span>
+              <span class="skill-tag">TensorRT</span>
+              <span class="skill-tag">Computer Vision</span>
+              <span class="skill-tag">Jetson</span>
+              <span class="skill-tag">Rockchip</span>
+              <span class="skill-tag">PLC Modbus</span>
+            </div>
+          </div>
+
+          <!-- Databases (spans 2 cols on lg) -->
+          <div class="space-y-5 lg:col-span-2 reveal">
+            <h4 class="font-headline text-lg md:text-2xl font-bold tracking-tight border-l-[3px] border-primary pl-4">Databases</h4>
+            <div class="flex flex-wrap gap-2 md:gap-3">
+              <span class="skill-tag">PostgreSQL</span>
+              <span class="skill-tag">SQLite</span>
+              <span class="skill-tag">Firebase</span>
+            </div>
+          </div>
+
+          <!-- AI Coding Tools (spans 2 cols on lg) -->
+          <div class="space-y-5 lg:col-span-2 reveal reveal-delay-1">
+            <h4 class="font-headline text-lg md:text-2xl font-bold tracking-tight border-l-[3px] border-primary pl-4">AI Coding Tools</h4>
+            <div class="flex flex-wrap gap-2 md:gap-3">
+              <span class="skill-tag">Claude Code</span>
+              <span class="skill-tag">Cursor</span>
+              <span class="skill-tag">Antigravity</span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+
+    <!-- ═══════════════════════ EXPERIENCE ═══════════════════════ -->
+    <section id="experience" class="py-24 md:py-32">
+      <div class="max-w-4xl mx-auto px-6 md:px-8">
+
+        <h2 class="font-headline text-4xl md:text-5xl font-bold mb-14 md:mb-20 reveal">Experience.</h2>
+
+        <div class="timeline-container space-y-10 md:space-y-14">
+
+          <!-- Freelance Developer -->
+          <div class="reveal timeline-item relative pl-10 md:pl-20">
+            <div class="timeline-dot active"></div>
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-1 md:gap-3 mb-2 md:mb-3">
+              <h4 class="font-headline text-xl md:text-2xl font-bold">Freelance Developer</h4>
+              <span class="font-label text-primary text-xs uppercase tracking-widest shrink-0">Nov 2025 — Feb 2026</span>
+            </div>
+            <p class="text-on-surface-variant font-medium mb-4 text-sm md:text-base">Independent Projects — Remote</p>
+            <p class="text-on-surface-variant/80 leading-relaxed text-sm md:text-base mb-3">
+              Built <strong class="text-on-surface font-semibold">Econ</strong> — a full-stack lodge &amp; hotel management
+              system using Go Gin with clean architecture. Implemented JWT auth, GORM ORM with SQLite,
+              room/reservation lifecycle (check-in / check-out / cancel), GST-compliant billing, and
+              customer records management.
+            </p>
+            <p class="text-on-surface-variant/80 leading-relaxed text-sm md:text-base">
+              Packaged a React frontend as an embedded static asset inside a single Go binary for
+              zero-dependency deployment via Electron.
+            </p>
+            <div class="flex flex-wrap gap-2 mt-5">
+              <span class="chip-sm">Go · Gin</span>
+              <span class="chip-sm">React</span>
+              <span class="chip-sm">GORM · SQLite</span>
+              <span class="chip-sm">JWT</span>
+              <span class="chip-sm">Electron</span>
+            </div>
+          </div>
+
+          <!-- Perleybrook Labs -->
+          <div class="reveal reveal-delay-1 timeline-item relative pl-10 md:pl-20">
+            <div class="timeline-dot"></div>
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-1 md:gap-3 mb-2 md:mb-3">
+              <h4 class="font-headline text-xl md:text-2xl font-bold">Software Engineer</h4>
+              <span class="font-label text-primary text-xs uppercase tracking-widest shrink-0">Aug 2023 — Nov 2025</span>
+            </div>
+            <p class="text-on-surface-variant font-medium mb-5 text-sm md:text-base">Perleybrook Labs Pvt Ltd — Kerala, India</p>
+
+            <!-- Sub-sections -->
+            <div class="space-y-5 text-sm md:text-base">
+              <div>
+                <p class="font-label text-[10px] uppercase tracking-[0.15em] text-primary mb-2">Backend (Golang)</p>
+                <p class="text-on-surface-variant/80 leading-relaxed">
+                  Designed scalable backend services with WebSocket communication for low-latency data streaming,
+                  SSH-enabled remote diagnostics, and optimized PostgreSQL stored procedures for analytics reporting.
+                </p>
+              </div>
+              <div>
+                <p class="font-label text-[10px] uppercase tracking-[0.15em] text-primary mb-2">Product Dev (Qt · C++ · Django)</p>
+                <p class="text-on-surface-variant/80 leading-relaxed">
+                  Built real-time object detection modules in Qt/C++ with spatial-temporal event triggers.
+                  Migrated 50K+ line codebase from Qt5 to Qt6 (+10% performance). Integrated AWS SES
+                  automating 100+ daily client notifications. Engineered industrial PLC (Modbus, Siemens LOGO!) integrations.
+                </p>
+              </div>
+              <div>
+                <p class="font-label text-[10px] uppercase tracking-[0.15em] text-primary mb-2">Machine Learning</p>
+                <p class="text-on-surface-variant/80 leading-relaxed">
+                  Fine-tuned YOLOv5 models for PPE compliance, vehicle detection, and activity recognition
+                  (20K–100K+ image datasets). Applied TensorRT/FP16 quantization for Jetson edge inference.
+                </p>
+              </div>
+              <div>
+                <p class="font-label text-[10px] uppercase tracking-[0.15em] text-primary mb-2">Client Deployment</p>
+                <p class="text-on-surface-variant/80 leading-relaxed">
+                  Led end-to-end deployment at 5+ enterprise sites including Coca-Cola, ITC, Saint-Gobain,
+                  Unilever, Godrej, Hyundai, and Kia — maintaining 99% uptime.
+                  Delivered 10+ client training sessions with 100% dashboard adoption.
+                </p>
+              </div>
+            </div>
+            <div class="flex flex-wrap gap-2 mt-5">
+              <span class="chip-sm">Go</span>
+              <span class="chip-sm">Qt · C++</span>
+              <span class="chip-sm">Django</span>
+              <span class="chip-sm">YOLOv5</span>
+              <span class="chip-sm">TensorRT</span>
+              <span class="chip-sm">AWS SES</span>
+              <span class="chip-sm">PostgreSQL</span>
+            </div>
+          </div>
+
+          <!-- JPMorgan -->
+          <div class="reveal reveal-delay-2 timeline-item relative pl-10 md:pl-20">
+            <div class="timeline-dot"></div>
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-1 md:gap-3 mb-2 md:mb-3">
+              <h4 class="font-headline text-xl md:text-2xl font-bold">Excel Skills Virtual Experience</h4>
+              <span class="font-label text-primary text-xs uppercase tracking-widest shrink-0">2023</span>
+            </div>
+            <p class="text-on-surface-variant font-medium mb-3 text-sm md:text-base">JPMorgan Chase &amp; Co. (Forage)</p>
+            <p class="text-on-surface-variant/80 leading-relaxed text-sm md:text-base">
+              Completed a structured virtual program focused on financial data analysis and
+              Excel automation within a global financial services context.
+            </p>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+
+    <!-- ═══════════════════════ EDUCATION ═══════════════════════ -->
+    <section id="education" class="py-24 md:py-32 bg-surface-container-low">
+      <div class="max-w-7xl mx-auto px-6 md:px-8">
+
+        <div class="mb-14 md:mb-20 reveal">
+          <h2 class="font-headline text-4xl md:text-5xl font-bold tracking-tight mb-3">Education.</h2>
+          <p class="text-on-surface-variant text-base md:text-lg">Academic foundation and continuous learning.</p>
+        </div>
+
+        <!-- Degree Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-5 md:gap-6 mb-12 md:mb-16">
+
+          <div class="edu-card bg-surface-container rounded-xl p-6 md:p-8 reveal">
+            <div class="flex items-start gap-4 mb-6">
+              <div class="p-2.5 bg-surface-container-high rounded-lg text-primary shrink-0">
+                <span class="material-symbols-outlined text-2xl">school</span>
+              </div>
+              <div>
+                <span class="font-label text-xs text-primary uppercase tracking-widest">2019 — 2023</span>
+                <p class="font-label text-xs text-outline uppercase tracking-widest mt-1">Chennai, India</p>
+              </div>
+            </div>
+            <h3 class="font-headline text-lg md:text-xl font-bold mb-2">B.E — Computer Science &amp; Engineering</h3>
+            <p class="text-on-surface-variant text-sm mb-5">Sathyabama Institute of Science and Technology</p>
+            <span class="inline-block bg-primary/10 border border-primary/20 px-3 py-1.5 rounded-full">
+              <span class="text-primary font-label text-xs uppercase tracking-widest font-semibold">CGPA: 8.57</span>
+            </span>
+          </div>
+
+          <div class="edu-card bg-surface-container rounded-xl p-6 md:p-8 reveal reveal-delay-1">
+            <div class="flex items-start gap-4 mb-6">
+              <div class="p-2.5 bg-surface-container-high rounded-lg text-primary shrink-0">
+                <span class="material-symbols-outlined text-2xl">menu_book</span>
+              </div>
+              <div>
+                <span class="font-label text-xs text-primary uppercase tracking-widest">2017 — 2019</span>
+                <p class="font-label text-xs text-outline uppercase tracking-widest mt-1">Anakkal, India</p>
+              </div>
+            </div>
+            <h3 class="font-headline text-lg md:text-xl font-bold mb-2">Class XII — CBSE</h3>
+            <p class="text-on-surface-variant text-sm mb-5">St. Antony's Public School</p>
+            <span class="inline-block bg-primary/10 border border-primary/20 px-3 py-1.5 rounded-full">
+              <span class="text-primary font-label text-xs uppercase tracking-widest font-semibold">74.4%</span>
+            </span>
+          </div>
+
+          <div class="edu-card bg-surface-container rounded-xl p-6 md:p-8 reveal reveal-delay-2">
+            <div class="flex items-start gap-4 mb-6">
+              <div class="p-2.5 bg-surface-container-high rounded-lg text-primary shrink-0">
+                <span class="material-symbols-outlined text-2xl">menu_book</span>
+              </div>
+              <div>
+                <span class="font-label text-xs text-primary uppercase tracking-widest">2017</span>
+                <p class="font-label text-xs text-outline uppercase tracking-widest mt-1">Anakkal, India</p>
+              </div>
+            </div>
+            <h3 class="font-headline text-lg md:text-xl font-bold mb-2">Class X — CBSE</h3>
+            <p class="text-on-surface-variant text-sm mb-5">St. Antony's Public School</p>
+            <span class="inline-block bg-primary/10 border border-primary/20 px-3 py-1.5 rounded-full">
+              <span class="text-primary font-label text-xs uppercase tracking-widest font-semibold">CGPA: 9.0</span>
+            </span>
+          </div>
+
+        </div>
+
+        <!-- Certifications + Languages -->
+        <div class="border-t border-outline-variant/10 pt-10 md:pt-12 reveal">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
+
+            <!-- Certifications -->
+            <div>
+              <h3 class="font-headline text-xl md:text-2xl font-bold mb-6">Certifications</h3>
+              <div class="space-y-3">
+                <div class="flex items-start gap-4 bg-surface-container p-4 md:p-5 rounded-xl">
+                  <span class="material-symbols-outlined text-primary text-lg mt-0.5 shrink-0">verified</span>
+                  <div>
+                    <p class="font-medium text-on-surface text-sm">Go (Golang) Programming</p>
+                    <p class="text-on-surface-variant text-xs mt-0.5">Udemy · Feb 2026 · ID: UC-3424e256</p>
+                  </div>
+                </div>
+                <div class="flex items-start gap-4 bg-surface-container p-4 md:p-5 rounded-xl">
+                  <span class="material-symbols-outlined text-primary text-lg mt-0.5 shrink-0">verified</span>
+                  <div>
+                    <p class="font-medium text-on-surface text-sm">Flutter Framework Training</p>
+                    <p class="text-on-surface-variant text-xs mt-0.5">Official Certification</p>
+                  </div>
+                </div>
+                <div class="flex items-start gap-4 bg-surface-container p-4 md:p-5 rounded-xl">
+                  <span class="material-symbols-outlined text-primary text-lg mt-0.5 shrink-0">verified</span>
+                  <div>
+                    <p class="font-medium text-on-surface text-sm">Python Programming</p>
+                    <p class="text-on-surface-variant text-xs mt-0.5">Coursera · ID: RRFX6WN5U5YN</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Spoken Languages -->
+            <div>
+              <h3 class="font-headline text-xl md:text-2xl font-bold mb-6">Languages</h3>
+              <div class="flex flex-wrap gap-3">
+                <div class="flex items-center gap-3 bg-surface-container px-5 py-3 rounded-xl">
+                  <span class="w-2 h-2 rounded-full bg-primary"></span>
+                  <span class="font-label text-sm text-on-surface">English</span>
+                  <span class="font-label text-xs text-outline uppercase tracking-wide">Native</span>
+                </div>
+                <div class="flex items-center gap-3 bg-surface-container px-5 py-3 rounded-xl">
+                  <span class="w-2 h-2 rounded-full bg-primary/60"></span>
+                  <span class="font-label text-sm text-on-surface">Malayalam</span>
+                  <span class="font-label text-xs text-outline uppercase tracking-wide">Native</span>
+                </div>
+                <div class="flex items-center gap-3 bg-surface-container px-5 py-3 rounded-xl">
+                  <span class="w-2 h-2 rounded-full bg-primary/40"></span>
+                  <span class="font-label text-sm text-on-surface">Hindi</span>
+                  <span class="font-label text-xs text-outline uppercase tracking-wide">Proficient</span>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+
+    <!-- ═══════════════════════ CONTACT ═══════════════════════ -->
+    <section id="contact" class="py-32 md:py-44 bg-surface overflow-hidden relative">
+      <div class="max-w-7xl mx-auto px-6 md:px-8 text-center relative z-10">
+
+        <h2 class="font-headline font-bold tracking-tight mb-6 reveal
+                   text-[clamp(2.8rem,8vw,6.5rem)] leading-[0.92]">
+          Let's build something<br/>
+          <span class="italic text-primary">robust.</span>
+        </h2>
+
+        <p class="text-on-surface-variant text-base md:text-lg mb-12 md:mb-16 reveal reveal-delay-1">
+          Available for full-time roles and freelance projects. Based in Kerala, India — open to remote.
+        </p>
+
+        <div class="flex flex-col items-center gap-8 md:gap-10 reveal reveal-delay-2">
+          <!-- Primary CTA -->
+          <a href="mailto:jithu10052001@gmail.com"
+             class="group inline-flex items-center gap-3 md:gap-4 font-headline font-bold
+                    text-xl md:text-2xl lg:text-3xl hover:text-primary transition-colors duration-300">
+            jithu10052001@gmail.com
+            <span class="material-symbols-outlined transition-transform duration-300 group-hover:translate-x-2">arrow_forward</span>
+          </a>
+
+          <!-- Social Links + Phone -->
+          <div class="flex flex-wrap justify-center items-center gap-6 md:gap-10">
+            <a href="https://github.com/jithu2001" target="_blank" rel="noopener noreferrer"
+               class="font-label uppercase tracking-widest text-sm text-on-surface-variant hover:text-primary transition-colors duration-300">
+              GitHub
+            </a>
+            <span class="w-px h-4 bg-outline-variant/40"></span>
+            <a href="https://linkedin.com/in/jithu2001" target="_blank" rel="noopener noreferrer"
+               class="font-label uppercase tracking-widest text-sm text-on-surface-variant hover:text-primary transition-colors duration-300">
+              LinkedIn
+            </a>
+            <span class="w-px h-4 bg-outline-variant/40"></span>
+            <a href="tel:+919847073856"
+               class="font-label uppercase tracking-widest text-sm text-on-surface-variant hover:text-primary transition-colors duration-300">
+              +91 98470 73856
+            </a>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Ambient effects -->
+      <div class="pointer-events-none absolute bottom-0 left-1/2 -translate-x-1/2 w-full h-2/3 bg-gradient-to-t from-primary/[0.06] to-transparent"></div>
+      <div class="pointer-events-none absolute -bottom-40 right-0 w-[700px] h-[700px] bg-primary/[0.04] blur-[150px] rounded-full"></div>
+    </section>
+
+  </main>
+
+
+  <!-- ═══════════════════════ FOOTER ═══════════════════════ -->
+  <footer class="w-full py-10 md:py-14 px-6 md:px-8 border-t border-outline-variant/10 bg-surface-container-lowest">
+    <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-5 md:gap-8">
+      <div class="font-label text-secondary/60 text-xs tracking-wide uppercase text-center md:text-left">
+        © 2026 Jithu J George · Engineering the digital foundation.
+      </div>
+      <div class="flex gap-6 md:gap-10">
+        <a href="https://github.com/jithu2001" target="_blank" rel="noopener noreferrer"
+           class="font-label text-xs tracking-wide uppercase text-secondary/60 hover:text-primary transition-colors duration-300">GitHub</a>
+        <a href="https://linkedin.com/in/jithu2001" target="_blank" rel="noopener noreferrer"
+           class="font-label text-xs tracking-wide uppercase text-secondary/60 hover:text-primary transition-colors duration-300">LinkedIn</a>
+        <a href="mailto:jithu10052001@gmail.com"
+           class="font-label text-xs tracking-wide uppercase text-secondary/60 hover:text-primary transition-colors duration-300">Email</a>
+      </div>
+    </div>
+  </footer>
+
+
+  <!-- ═══════════════════════ SCRIPTS ═══════════════════════ -->
+  <script>
+    /* ── Mobile Menu ── */
+    const mobileBtn  = document.getElementById('mobile-menu-btn');
+    const mobileMenu = document.getElementById('mobile-menu');
+    const menuIcon   = document.getElementById('menu-icon');
+
+    mobileBtn.addEventListener('click', () => {
+      const isOpen = !mobileMenu.classList.contains('mobile-menu-hidden');
+      if (isOpen) {
+        mobileMenu.classList.add('mobile-menu-hidden');
+        menuIcon.textContent = 'menu';
+      } else {
+        mobileMenu.classList.remove('mobile-menu-hidden');
+        menuIcon.textContent = 'close';
+      }
+    });
+
+    // Close on nav link click
+    document.querySelectorAll('.mobile-nav-link').forEach(link => {
+      link.addEventListener('click', () => {
+        mobileMenu.classList.add('mobile-menu-hidden');
+        menuIcon.textContent = 'menu';
+      });
+    });
+
+
+    /* ── Glassmorphism Nav on Scroll ── */
+    const navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 20) {
+        navbar.classList.add('nav-scrolled');
+      } else {
+        navbar.classList.remove('nav-scrolled');
+      }
+    }, { passive: true });
+
+
+    /* ── Scroll Reveal ── */
+    const revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          // Don't unobserve — keep for re-entry on mobile scroll-up
+        }
+      });
+    }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+    document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+
+
+    /* ── Subtle hero mouse parallax ── */
+    const heroGlows = document.querySelectorAll('.hero-glow');
+    document.addEventListener('mousemove', (e) => {
+      const x = (e.clientX / window.innerWidth  - 0.5) * 24;
+      const y = (e.clientY / window.innerHeight - 0.5) * 24;
+      heroGlows.forEach((g, i) => {
+        const f = i === 0 ? 1 : -0.65;
+        g.style.transform = `translate(${x * f}px, ${y * f}px)`;
+      });
+    }, { passive: true });
+
+
+    /* ── Hide scroll indicator after first scroll ── */
+    const scrollIndicator = document.querySelector('.scroll-indicator');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 80) scrollIndicator.style.opacity = '0';
+      else scrollIndicator.style.opacity = '1';
+    }, { passive: true, once: false });
+  </script>
 
 </body>
-
 </html>
