@@ -182,6 +182,15 @@ html { scroll-behavior: smooth; }
   will-change: transform;
 }
 
+/* ── Hero text readability over WebGL particles ────────────── */
+#hero .max-w-7xl {
+  text-shadow: 0 0 20px rgba(19, 19, 19, 0.9),
+               0 0 40px rgba(19, 19, 19, 0.6);
+}
+#hero h1 .name-char {
+  text-shadow: none;
+}
+
 /* ── Responsive typography guard ────────────────────────────── */
 @media (max-width: 400px) {
   h1 { font-size: clamp(3rem, 18vw, 5rem); }
@@ -194,4 +203,117 @@ html { scroll-behavior: smooth; }
   .cursor-blink       { animation: none !important; }
   .scroll-indicator   { transition: none !important; }
   html                { scroll-behavior: auto; }
+}
+
+
+/* ═══════════════════════════════════════════════════════════════
+   ANIMATION LAYER — driven by animations.js
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ── Scroll margin so fixed nav never covers anchors ─────────── */
+section[id] { scroll-margin-top: 80px; }
+
+/* ── Hide system cursor (class injected by JS on pointer devices) */
+.has-custom-cursor,
+.has-custom-cursor * { cursor: none !important; }
+
+/* ── Custom Cursor: Dot ──────────────────────────────────────── */
+#c-dot {
+  position: fixed;
+  top: 0; left: 0;
+  width: 6px; height: 6px;
+  background: #a3d1b5;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 99999;
+  opacity: 0;
+  will-change: transform;
+  transition: opacity .25s ease, width .22s ease, height .22s ease, background .22s ease;
+}
+
+/* ── Custom Cursor: Ring ─────────────────────────────────────── */
+#c-ring {
+  position: fixed;
+  top: 0; left: 0;
+  width: 32px; height: 32px;
+  border: 1.5px solid rgba(163,209,181,.55);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 99998;
+  opacity: 0;
+  will-change: transform;
+  transition: opacity .25s ease,
+              width .24s ease, height .24s ease,
+              border-color .24s ease, background .24s ease;
+}
+
+/* Hover — ring expands, dot shrinks */
+#c-dot.c-hover  { width: 4px; height: 4px; background: rgba(163,209,181,.35); }
+#c-ring.c-hover { width: 48px; height: 48px; border-color: rgba(163,209,181,.85);
+                  background: rgba(163,209,181,.06); }
+
+/* Click — ring contracts */
+#c-ring.c-click { width: 22px; height: 22px; border-color: #a3d1b5;
+                  background: rgba(163,209,181,.15); }
+
+/* ── Card gloss (div injected by JS into each .project-card) ─── */
+.card-gloss {
+  position: absolute;
+  inset: 0;
+  border-radius: 0.75rem;   /* match Tailwind rounded-xl */
+  pointer-events: none;
+  opacity: 0;
+  z-index: 2;
+  transition: opacity .32s ease;
+}
+
+/* ── Project card: overflow clip + GPU hint ──────────────────── */
+.project-card {
+  overflow: hidden;
+  will-change: transform;
+}
+@media (hover: hover) {
+  /* Let JS handle the 3D transform; neutralise Tailwind's CSS-only hover */
+  .project-card:hover { transform: none; }
+}
+
+/* ── Magnetic buttons: GPU hint ──────────────────────────────── */
+a.bg-primary { will-change: transform; }
+
+/* ── WebGL canvas forced onto its own compositor layer ────────── */
+#hero canvas { will-change: contents; isolation: isolate; }
+
+
+/* ── NAME JUGGLE — individual character spans ────────────────── */
+.name-char {
+  display: inline-block;
+
+  /* Rotation pivots from the base of each letter — more natural */
+  transform-origin: center 85%;
+
+  /* GPU-accelerated — no layout impact */
+  will-change: transform, color;
+
+  /* Letter spacing still applied by parent h1's tracking-tighter */
+}
+
+/* Preserve the h1's letter spacing across character spans.
+   Tailwind's tracking-tighter = -0.05em; reassert on the parent
+   so the spans inherit it correctly. */
+#hero h1 {
+  letter-spacing: -0.05em;
+}
+
+/* Subtle text-shadow on juggled chars for extra depth */
+.name-char:not(:empty) {
+  text-shadow: 0 0 0 transparent;
+  transition: text-shadow .3s ease;
+}
+
+
+/* ── Mobile guards ───────────────────────────────────────────── */
+@media (max-width: 767px) {
+  #c-dot, #c-ring { display: none !important; }
+  .has-custom-cursor,
+  .has-custom-cursor * { cursor: auto !important; }
 }

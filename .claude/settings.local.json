@@ -3,5 +3,8 @@
     "allow": [
       "WebFetch(domain:chkstepan.com)"
     ]
+  },
+  "enabledPlugins": {
+    "superpowers@superpowers-marketplace": true
   }
 }
