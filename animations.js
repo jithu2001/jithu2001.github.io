@@ -43,7 +43,7 @@
       canvas: canvas, alpha: true, antialias: false,
       powerPreference: IS_MOBILE ? 'low-power' : 'high-performance',
     });
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.setPixelRatio(IS_MOBILE ? 1 : Math.min(window.devicePixelRatio, 2));
     renderer.setClearColor(0x000000, 0);
 
     var scene  = new THREE.Scene();
@@ -59,7 +59,7 @@
     onResize();
     window.addEventListener('resize', onResize, { passive: true });
 
-    var COUNT = IS_MOBILE ? 480 : 1600;
+    var COUNT = IS_MOBILE ? 150 : 1600;
     var pos   = new Float32Array(COUNT * 3);
     var sc    = new Float32Array(COUNT);
     var ph    = new Float32Array(COUNT);
@@ -80,6 +80,7 @@
     geo.setAttribute('aScale',   new THREE.BufferAttribute(sc,  1));
     geo.setAttribute('aPhase',   new THREE.BufferAttribute(ph,  1));
 
+    var POINT_MUL = IS_MOBILE ? 120.0 : 180.0;
     var uniforms = { uTime:{value:0}, uMouseX:{value:0}, uMouseY:{value:0} };
     var mat = new THREE.ShaderMaterial({
       uniforms: uniforms,
@@ -93,7 +94,7 @@
         'float d=clamp(1.7-abs(p.z)*0.22,0.2,1.7);',
         'p.x+=uMouseX*0.22*d;p.y+=uMouseY*0.22*d;',
         'vec4 mv=modelViewMatrix*vec4(p,1.0);',
-        'gl_PointSize=aScale*(180.0/-mv.z);gl_Position=projectionMatrix*mv;}',
+        'gl_PointSize=aScale*(' + POINT_MUL.toFixed(1) + '/-mv.z);gl_Position=projectionMatrix*mv;}',
       ].join(''),
       fragmentShader:[
         'void main(){float d=length(gl_PointCoord-vec2(0.5));if(d>0.5)discard;',
@@ -458,11 +459,15 @@
     }
 
     /* ── 6. Main animation loop ── */
+    var heroVisible = true;
+    new IntersectionObserver(function(en){ heroVisible = en[0].isIntersecting; },{ threshold:0 })
+      .observe(hero);
+
     (function loop() {
       requestAnimationFrame(loop);
 
-      /* Skip while re-caching rest positions */
-      if (cachePending) return;
+      /* Skip when hero is off-screen or re-caching */
+      if (!heroVisible || cachePending) return;
 
       var cx = cursor.x + window.scrollX;
       var cy = cursor.y + window.scrollY;
@@ -575,7 +580,7 @@
     if (!IS_TOUCH) initCardTilt();
     if (!IS_TOUCH) initMagnetic();
     initCounters();
-    initNameEffect();
+    if (!IS_MOBILE && !IS_TOUCH) initNameEffect();
   });
 
 }());
