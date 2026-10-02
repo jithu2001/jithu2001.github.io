@@ -1,101 +1,102 @@
 import { motion, useScroll, useSpring } from 'motion/react'
 import { useRef } from 'react'
 import { certifications, education, experience } from '../data/content'
-import { Reveal } from './Reveal'
-import { SectionHeader } from './SectionHeader'
+import { Chapter, Reveal } from './ui'
 
 export function Experience() {
-  const track = useRef<HTMLOListElement>(null)
-  const { scrollYProgress } = useScroll({ target: track, offset: ['start 75%', 'end 60%'] })
+  const track = useRef<HTMLDivElement>(null)
+  const { scrollYProgress } = useScroll({ target: track, offset: ['start 70%', 'end 60%'] })
   const line = useSpring(scrollYProgress, { stiffness: 140, damping: 30, mass: 0.4 })
 
   return (
     <section id="experience" aria-labelledby="exp-title" className="section">
-      <div className="container-x">
-        <SectionHeader
+      <div className="page">
+        <Chapter
           id="exp-title"
-          index="04"
-          eyebrow="Experience"
-          title="Where I've built, shipped and supported."
-          lede="Two roles, one pattern: own the problem from requirements through production, then stay until people actually use what we built."
+          no="04"
+          name="Ship's log"
+          jp="第四話 · 航海日誌"
+          title="Where I've built, shipped and stayed."
+          lede="Two crews, one pattern: own the problem from requirements to production, then stay until people actually use it."
         />
 
-        <div className="relative mt-16">
-          <div aria-hidden className="absolute top-2 bottom-2 left-[7px] w-px bg-line-strong md:left-[calc(220px+7px)]">
-            <motion.div className="h-full w-full origin-top bg-gradient-to-b from-blue via-violet to-teal" style={{ scaleY: line }} />
+        <div ref={track} className="relative mt-16">
+          <div aria-hidden className="absolute top-0 bottom-0 left-[9px] w-[3px] bg-ink/15 lg:left-[279px]">
+            <motion.div className="h-full w-full origin-top bg-red" style={{ scaleY: line }} />
           </div>
 
-          <ol ref={track} className="space-y-10 md:space-y-14">
-          {experience.map((r) => (
-            <li key={r.company} className="relative grid gap-4 pl-9 md:grid-cols-[220px_1fr] md:gap-12 md:pl-0">
-              <Reveal className="md:pt-1 md:text-right md:pr-12">
-                <p className="font-mono text-[12.5px] text-muted">{r.period}</p>
-                <p className="mt-1 text-[13px] text-faint">{r.location}</p>
-              </Reveal>
-              <span aria-hidden className="absolute top-1.5 left-0 h-[15px] w-[15px] rounded-full border-[3px] border-white bg-blue shadow-[0_0_0_1px_var(--color-line-strong),0_0_0_6px_rgb(61_107_245/0.12)] md:left-[220px]" />
+          <ol className="space-y-14 lg:space-y-20">
+            {experience.map((r, ri) => (
+              <li key={r.company} className="relative grid gap-6 pl-10 lg:grid-cols-[280px_1fr] lg:gap-0 lg:pl-0">
+                <span aria-hidden className="absolute top-2 left-0 h-[21px] w-[21px] rotate-45 border-[2.5px] border-ink bg-red lg:left-[270px]" />
 
-              <Reveal delay={0.05} className="md:pl-6">
-                <article className="card p-6 sm:p-8">
-                  <header className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-2">
-                    <div>
-                      <h3 className="text-[24px] font-semibold sm:text-[26px]">{r.company}</h3>
-                      <p className="mt-1 text-[16px] text-ink-2">{r.role}</p>
+                <Reveal className="lg:pr-12">
+                  <p className="label text-red">Log {String(ri + 1).padStart(2, '0')}</p>
+                  <p className="display mt-2 text-[34px] whitespace-pre-line lg:text-[40px]">{r.period.replace(' – ', ' —\n')}</p>
+                  <p className="mt-2 font-mono text-[13px] text-muted">{r.location} · {r.type}</p>
+                </Reveal>
+
+                <Reveal delay={0.06} className="lg:pl-14">
+                  <article className="panel panel-shadow">
+                    <header className="flex flex-wrap items-end justify-between gap-3 border-b-[2.5px] border-ink p-6 sm:p-8">
+                      <div>
+                        <h3 className="display text-[44px] sm:text-[56px]">{r.company}</h3>
+                        <p className="mt-1 text-[17px] font-semibold">{r.role}</p>
+                      </div>
+                      <span className="stamp text-[15px] text-red">{r.type}</span>
+                    </header>
+                    <div className="p-6 sm:p-8">
+                      <p className="max-w-2xl text-[17px] leading-relaxed text-ink-2">{r.summary}</p>
+
+                      {r.highlights.some((h) => h.title) ? (
+                        <ol className="mt-7 grid gap-0 border-2 border-ink lg:grid-cols-3">
+                          {r.highlights.map((h, i) => (
+                            <li key={h.text} className={`p-5 ${i ? 'border-t-2 border-ink lg:border-t-0 lg:border-l-2' : ''}`}>
+                              <p className="font-mono text-[12px] text-red">Entry {i + 1}</p>
+                              <p className="display mt-1 text-[26px]">{h.title}</p>
+                              <p className="mt-2 text-[15px] leading-relaxed text-ink-2">{h.text}</p>
+                            </li>
+                          ))}
+                        </ol>
+                      ) : (
+                        <ol className="mt-7 divide-y-2 divide-dotted divide-ink/25">
+                          {r.highlights.map((h, i) => (
+                            <li key={h.text} className="grid grid-cols-[44px_1fr] gap-2 py-3.5 text-[16px] leading-relaxed">
+                              <span className="font-mono text-[13px] text-red">{String(i + 1).padStart(2, '0')}</span>
+                              {h.text}
+                            </li>
+                          ))}
+                        </ol>
+                      )}
+
+                      <p className="mt-6 border-t-2 border-ink pt-4 font-mono text-[12.5px] tracking-wide text-muted">
+                        <span className="text-ink">Cargo:</span> {r.stack.join(' / ')}
+                      </p>
                     </div>
-                    <span className="chip">{r.type}</span>
-                  </header>
-                  <p className="mt-4 text-[16px] leading-relaxed text-muted">{r.summary}</p>
-
-                  {r.highlights.some((h) => h.title) ? (
-                    <ul className="mt-6 grid gap-3 lg:grid-cols-3">
-                      {r.highlights.map((h) => (
-                        <li key={h.text} className="rounded-2xl border border-line bg-canvas/70 p-4 sm:p-5">
-                          <p className="font-medium">{h.title}</p>
-                          <p className="mt-2 text-[14.5px] leading-relaxed text-muted">{h.text}</p>
-                        </li>
-                      ))}
-                    </ul>
-                  ) : (
-                    <ul className="mt-6 space-y-3">
-                      {r.highlights.map((h) => (
-                        <li key={h.text} className="flex gap-3 text-[15.5px] leading-relaxed text-ink-2">
-                          <span aria-hidden className="mt-[10px] h-1.5 w-1.5 shrink-0 rounded-full bg-blue/60" />
-                          {h.text}
-                        </li>
-                      ))}
-                    </ul>
-                  )}
-
-                  <ul className="mt-6 flex flex-wrap gap-1.5 border-t border-line pt-5" aria-label="Stack">
-                    {r.stack.map((s) => (
-                      <li key={s} className="font-mono text-[12px] text-muted after:ml-1.5 after:text-line-strong after:content-['/'] last:after:content-['']">{s}</li>
-                    ))}
-                  </ul>
-                </article>
-              </Reveal>
-            </li>
-          ))}
+                  </article>
+                </Reveal>
+              </li>
+            ))}
           </ol>
         </div>
 
-        <div className="mt-16 grid gap-4 md:grid-cols-[1fr_1fr_1fr]">
-          {education.map((e, i) => (
-            <Reveal key={e.school} delay={0.05 * i}>
-              <div className="glass h-full rounded-2xl p-5 sm:p-6">
-                <p className="eyebrow !text-[11px]">{e.period}</p>
-                <p className="mt-3 font-medium">{e.school}</p>
-                <p className="mt-1 text-[14.5px] text-muted">{e.detail}</p>
+        <Reveal className="mt-20">
+          <div className="grid border-[2.5px] border-ink bg-sheet md:grid-cols-3">
+            {education.map((e, i) => (
+              <div key={e.school} className={`p-6 ${i ? 'border-t-[2.5px] border-ink md:border-t-0 md:border-l-[2.5px]' : ''}`}>
+                <p className="label text-red">{i === 0 ? 'Training' : 'Studied'} · {e.period}</p>
+                <p className="display mt-3 text-[26px]">{e.school}</p>
+                <p className="mt-1 text-[15px] text-ink-2">{e.detail}</p>
               </div>
-            </Reveal>
-          ))}
-          <Reveal delay={0.1}>
-            <div className="glass h-full rounded-2xl p-5 sm:p-6">
-              <p className="eyebrow !text-[11px]">Certifications</p>
-              <ul className="mt-3 space-y-1.5 text-[14.5px] text-ink-2">
+            ))}
+            <div className="border-t-[2.5px] border-ink p-6 md:border-t-0 md:border-l-[2.5px]">
+              <p className="label text-red">Certifications</p>
+              <ul className="mt-3 space-y-1.5 text-[15px]">
                 {certifications.map((c) => <li key={c}>{c}</li>)}
               </ul>
             </div>
-          </Reveal>
-        </div>
+          </div>
+        </Reveal>
       </div>
     </section>
   )

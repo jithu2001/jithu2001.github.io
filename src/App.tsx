@@ -12,7 +12,6 @@ import { Skills } from './components/Skills'
 
 export default function App() {
   return (
-    // "user" disables transform/layout animations for prefers-reduced-motion; opacity fades remain.
     <MotionConfig reducedMotion="user">
       <Nav />
       <main id="main">

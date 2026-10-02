@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { profile } from '../data/content'
 import { ArrowUpRight, GitHub, Star } from './Icons'
-import { Reveal } from './Reveal'
+import { Reveal } from './ui'
 
 type Repo = { name: string; description: string | null; language: string | null; stargazers_count: number; pushed_at: string; html_url: string; fork: boolean }
 type Summary = { repos: Repo[]; total: number; languages: [string, number][] }
@@ -69,29 +69,27 @@ export function GitHubActivity() {
 
   return (
     <Reveal className="mt-16">
-      <div className="glass rounded-3xl p-5 sm:p-7">
-        <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
-          <div className="flex items-center gap-3">
-            <span className="grid h-10 w-10 place-items-center rounded-full bg-ink text-white"><GitHub /></span>
-            <div>
-              <p className="font-medium">Recently on GitHub</p>
-              <p className="text-[13.5px] text-muted">
-                {data.total} public repositories · mostly {data.languages.map(([l]) => l).join(', ')}
-              </p>
-            </div>
-          </div>
-          <a href={profile.github} target="_blank" rel="noreferrer" className="link-quiet">@jithu2001 <ArrowUpRight width={15} height={15} /></a>
+      <div className="border-[2.5px] border-ink bg-ink text-sheet">
+        <div className="flex flex-col justify-between gap-3 border-b-2 border-sheet/20 px-5 py-4 sm:flex-row sm:items-center sm:px-7">
+          <p className="flex items-center gap-3">
+            <GitHub />
+            <span className="display text-[24px]">Fresh from the GitHub log</span>
+          </p>
+          <p className="font-mono text-[12.5px] text-paper-3">
+            {data.total} public repos · mostly {data.languages.map(([l]) => l).join(', ')} ·{' '}
+            <a href={profile.github} target="_blank" rel="noreferrer" className="text-sheet underline decoration-red decoration-2 underline-offset-4 hover:text-red">@jithu2001</a>
+          </p>
         </div>
-        <ul className="mt-5 grid gap-2 sm:grid-cols-2 lg:grid-cols-4">
-          {data.repos.map((r) => (
-            <li key={r.name}>
-              <a href={r.html_url} target="_blank" rel="noreferrer" className="group block h-full rounded-2xl border border-line bg-white/70 p-4 transition-all duration-300 hover:-translate-y-0.5 hover:bg-white hover:shadow-card">
-                <p className="flex items-center justify-between gap-2 font-mono text-[13px] font-medium text-ink">
+        <ul className="grid sm:grid-cols-2 lg:grid-cols-4">
+          {data.repos.map((r, i) => (
+            <li key={r.name} className={`${i ? 'border-t-2 border-sheet/15 sm:border-t-0' : ''} ${i % 2 ? 'sm:border-l-2 sm:border-sheet/15' : ''} ${i > 1 ? 'sm:border-t-2 lg:border-t-0' : ''} ${i === 2 ? 'lg:border-l-2 lg:border-sheet/15' : ''}`}>
+              <a href={r.html_url} target="_blank" rel="noreferrer" className="group block h-full p-5 transition-colors hover:bg-red">
+                <p className="flex items-center justify-between gap-2 font-mono text-[14px] font-medium">
                   <span className="truncate">{r.name}</span>
-                  <ArrowUpRight width={14} height={14} className="shrink-0 text-faint transition-colors group-hover:text-ink" />
+                  <ArrowUpRight width={14} height={14} className="shrink-0 opacity-60 group-hover:opacity-100" />
                 </p>
-                {r.description && <p className="mt-1.5 line-clamp-2 text-[13px] leading-snug text-muted">{r.description}</p>}
-                <p className="mt-3 flex items-center gap-3 font-mono text-[11px] text-faint">
+                {r.description && <p className="mt-2 line-clamp-2 text-[13.5px] leading-snug text-paper-3 group-hover:text-sheet">{r.description}</p>}
+                <p className="mt-3 flex items-center gap-3 font-mono text-[11.5px] text-faint group-hover:text-sheet/80">
                   {r.language && <span>{r.language}</span>}
                   {r.stargazers_count > 0 && <span className="flex items-center gap-1"><Star width={12} height={12} />{r.stargazers_count}</span>}
                   <span>{ago(r.pushed_at)}</span>

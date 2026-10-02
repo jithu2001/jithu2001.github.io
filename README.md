@@ -11,7 +11,15 @@ Live: https://jithu2001.github.io
 | Framework | React 19 + TypeScript, built with Vite |
 | Styling | Tailwind CSS v4 (design tokens in `src/index.css`) |
 | Motion | [Motion](https://motion.dev) (`motion/react`) |
-| 3D | three.js via React Three Fiber, lazy-loaded |
+| 3D | CSS perspective (no WebGL): the wanted poster tilts toward the cursor, with layers at different depths |
+| Type | Anton, Archivo, Abril Fatface, IBM Plex Mono, Dela Gothic One + Noto Sans JP (Japanese fonts are subset to only the glyphs used) |
+
+## Design
+
+A fan-made, **original** design inspired by pirate-adventure manga (One Piece): a wanted poster, a sea chart, a ship's log and manga panels, printed in ink on newsprint with one red and one sea blue. It uses no official logos, characters or artwork from the series.
+
+- **Your photo:** add `public/portrait.jpg` (roughly square, with the face centred) and it replaces the ink drawing on the wanted poster automatically, with a sepia print filter applied.
+- **Japanese text:** if you add or change any Japanese text, re-subset the fonts. Every Japanese character in `src/` must be included in the two `&text=` font URLs in `index.html`.
 
 There are no environment variables and no backend. The GitHub activity strip calls the public GitHub API from the browser, caches the result in `sessionStorage`, and falls back to a built-in snapshot if the API is unavailable or rate-limited.
 
@@ -51,19 +59,19 @@ Other files you may want to update:
 src/
   data/content.ts        all site content
   components/
-    Hero.tsx             headline, CTAs, proof strip, 3D stage + DOM labels
-    HeroScene.tsx        the R3F scene (lazy chunk)
-    Nav.tsx              sticky nav, active-section pill, mobile menu
-    About, Capabilities, Process, Experience, Projects,
+    ui.tsx               Reveal, Chapter header, Brush marker, Jolly Roger
+    Hero.tsx             headline, CTAs, wanted poster (3D tilt), caption boxes
+    Nav.tsx              masthead nav, active-section underline, mobile menu
+    Process.tsx          interactive sea chart: the product loop as 7 islands
+    About, Capabilities, Experience, Projects (+ case-file dialog),
     GitHubActivity, Skills, ProductThinking, Contact
   hooks/
-    useDeviceTier.ts     decides full / lite / no 3D per device
     useActiveSection.ts  IntersectionObserver for the nav
 ```
 
 ## Performance & accessibility notes
 
-- **3D is optional.** The scene loads in its own chunk once the browser is idle. Devices without WebGL, or with Data Saver on, get a static SVG instead. Phones, touch devices and low-memory or low-core machines get a lighter scene (fewer particles, lower DPR, no antialiasing). The canvas stops rendering while the hero is off-screen.
-- **Initial JS** is about 138 KB gzipped. three.js (about 243 KB gzipped) loads only with the hero scene.
-- **Reduced motion:** with `prefers-reduced-motion`, the scene renders a single static frame, Motion skips transform animations, and CSS animations are turned off.
-- **Keyboard:** skip link, visible focus rings, arrow-key tablists (process stages and skills), a native `<dialog>` for project case studies (Esc closes it and focus returns to the trigger), and 3D stage labels that are real buttons.
+- **No WebGL.** All depth comes from CSS 3D transforms. Initial JS is about 138 KB gzipped (React + Motion).
+- **Reduced motion:** with `prefers-reduced-motion`, poster sway and tilt, marquee and reveal motion are turned off, and the content stays complete.
+- **Keyboard:** skip link, visible focus, an arrow-key tablist for the sea-chart islands, and a native `<dialog>` for project case files (Esc closes it and focus returns to the trigger).
+- **Decorative Japanese text** is supplementary only. Every section title and label is also in English.

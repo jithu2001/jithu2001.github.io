@@ -1,13 +1,13 @@
 import { useState } from 'react'
 import { profile } from '../data/content'
 import { ArrowUpRight, Check, Download, GitHub, LinkedIn, Mail } from './Icons'
-import { Reveal } from './Reveal'
+import { JollyRoger, Reveal } from './ui'
 
-const ways = [
-  { title: 'Freelance & contract', text: 'You have a problem and need someone to scope it, build it and ship it.' },
-  { title: 'Forward-deployed engineering', text: 'Your product has to work inside real customer environments.' },
-  { title: 'Backend engineering', text: 'Go services, APIs and data that need to be reliable in production.' },
-  { title: 'Product roles', text: 'You want a PM who can talk to engineers and users in their own terms.' },
+const positions = [
+  { role: 'Freelance & contract', text: 'You have a problem and need someone to scope it, build it and ship it.' },
+  { role: 'Forward-deployed engineer', text: 'Your product has to work inside real customer environments.' },
+  { role: 'Backend engineer', text: 'Go services, APIs and data that must hold up in production.' },
+  { role: 'Product roles', text: 'A PM who speaks fluent engineer and fluent user.' },
 ]
 
 export function Contact() {
@@ -17,65 +17,82 @@ export function Contact() {
       await navigator.clipboard.writeText(profile.email)
       setCopied(true)
       setTimeout(() => setCopied(false), 1800)
-    } catch { /* clipboard blocked; mailto link still works */ }
+    } catch { /* clipboard blocked; mailto still works */ }
   }
 
   return (
-    <section id="contact" aria-labelledby="contact-title" className="section pb-16">
-      <div className="container-x">
-        <Reveal>
-          <div className="noise relative overflow-hidden rounded-[32px] border border-line bg-white px-6 py-14 shadow-lift sm:px-12 sm:py-20 lg:px-16">
-            <div aria-hidden className="pointer-events-none absolute inset-0">
-              <div className="absolute -top-32 -left-24 h-[420px] w-[520px] rounded-full bg-[radial-gradient(closest-side,#e4ebff,transparent)]" />
-              <div className="absolute -right-24 -bottom-40 h-[460px] w-[560px] rounded-full bg-[radial-gradient(closest-side,#efeaff,transparent)]" />
-              <div className="grid-bg absolute inset-0 opacity-70" />
-            </div>
+    <section id="contact" aria-labelledby="contact-title" className="relative overflow-hidden border-t-[2.5px] border-ink bg-red text-sheet">
+      <div aria-hidden className="speedlines absolute inset-0 opacity-[0.07]" />
+      <div aria-hidden className="halftone absolute inset-0 opacity-[0.14] fade-tl" />
 
-            <div className="relative grid gap-12 lg:grid-cols-[1.2fr_1fr] lg:gap-16">
-              <div>
-                <p className="eyebrow"><span className="text-blue">08</span> · Contact</p>
-                <h2 id="contact-title" className="mt-5 text-[38px] leading-[1.04] font-semibold sm:text-[54px] lg:text-[60px]">
-                  Have a problem worth <span className="font-serif font-normal italic text-gradient pr-1">building?</span>
-                </h2>
-                <p className="mt-5 max-w-lg text-[17px] leading-relaxed text-muted">
-                  I'm open to freelance projects, forward-deployed engineering, backend roles and product-focused work. Tell me what
-                  you're trying to solve.
-                </p>
+      <div className="page relative py-24 lg:py-32">
+        <div className="flex items-center gap-4 border-t-[3px] border-sheet pt-3">
+          <span className="label">Final chapter</span>
+          <span className="label opacity-80">Join the crew</span>
+          <span className="jp-sm ml-auto text-[14px] opacity-90">最終話 · 仲間</span>
+        </div>
 
-                <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
-                  <a href={`mailto:${profile.email}?subject=Let's%20talk`} className="btn btn-primary"><Mail /> Let's talk</a>
-                  <a href={profile.resume} download className="btn btn-secondary"><Download /> Download resume</a>
-                </div>
-                <div className="mt-6 flex flex-wrap items-center gap-x-6 gap-y-3">
-                  <a className="link-quiet" href={profile.linkedin} target="_blank" rel="noreferrer"><LinkedIn /> LinkedIn</a>
-                  <a className="link-quiet" href={profile.github} target="_blank" rel="noreferrer"><GitHub /> GitHub</a>
-                  <a className="link-quiet" href={profile.resumeFde} download>FDE-focused resume <ArrowUpRight width={14} height={14} /></a>
-                </div>
-                <button type="button" onClick={copy} className="mt-6 inline-flex items-center gap-2 rounded-full border border-line bg-canvas px-3.5 py-2 font-mono text-[13px] text-ink-2 transition-colors hover:border-line-strong" aria-live="polite">
-                  {copied ? <><Check width={15} height={15} className="text-teal" /> Copied</> : profile.email}
-                </button>
+        <div className="mt-10 grid gap-14 lg:grid-cols-[minmax(0,1.2fr)_minmax(0,0.8fr)] lg:gap-16">
+          <div>
+            <Reveal>
+              <h2 id="contact-title" className="display text-[60px] [text-shadow:4px_4px_0_var(--color-ink)] sm:text-[96px] lg:text-[120px]">
+                Have a problem worth building?
+              </h2>
+            </Reveal>
+            <Reveal delay={0.1}>
+              <p className="mt-8 max-w-lg text-[19px] leading-relaxed">
+                I'm open to freelance projects, forward-deployed engineering, backend roles and product-focused work. Tell me what
+                you're trying to solve.
+              </p>
+            </Reveal>
+            <Reveal delay={0.16}>
+              <div className="mt-9 flex flex-col gap-4 sm:flex-row sm:flex-wrap">
+                <a href={`mailto:${profile.email}?subject=Let's%20talk`} className="btn !bg-ink text-sheet !shadow-[4px_4px_0_var(--color-sheet)] hover:!shadow-[6px_6px_0_var(--color-sheet)]"><Mail /> Let's talk</a>
+                <a href={profile.resume} download className="btn btn-paper"><Download /> Download resume</a>
               </div>
+              <div className="mt-7 flex flex-wrap items-center gap-x-7 gap-y-3 text-[15.5px] font-medium">
+                <a className="flex items-center gap-2 underline decoration-2 underline-offset-[6px] hover:decoration-ink" href={profile.linkedin} target="_blank" rel="noreferrer"><LinkedIn /> LinkedIn</a>
+                <a className="flex items-center gap-2 underline decoration-2 underline-offset-[6px] hover:decoration-ink" href={profile.github} target="_blank" rel="noreferrer"><GitHub /> GitHub</a>
+                <a className="flex items-center gap-2 underline decoration-2 underline-offset-[6px] hover:decoration-ink" href={profile.resumeFde} download>FDE resume <ArrowUpRight width={14} height={14} /></a>
+              </div>
+              <button type="button" onClick={copy} aria-live="polite" className="mt-7 inline-flex items-center gap-2 border-2 border-sheet px-4 py-2 font-mono text-[14px] transition-colors hover:bg-sheet hover:text-red">
+                {copied ? <><Check width={15} height={15} /> Copied to clipboard</> : profile.email}
+              </button>
+            </Reveal>
+          </div>
 
-              <ul className="grid content-start gap-3">
-                {ways.map((w, i) => (
-                  <Reveal key={w.title} as="li" delay={0.06 * i}>
-                    <div className="rounded-2xl border border-line bg-white/75 p-5 backdrop-blur">
-                      <p className="font-medium">{w.title}</p>
-                      <p className="mt-1 text-[14.5px] leading-relaxed text-muted">{w.text}</p>
+          <Reveal delay={0.12}>
+            <div className="panel panel-shadow text-ink">
+              <div className="flex items-center gap-4 border-b-[2.5px] border-ink p-5">
+                <JollyRoger size={64} />
+                <div>
+                  <p className="label text-red">Crew positions open</p>
+                  <p className="display text-[28px]">Pick your role for me</p>
+                </div>
+              </div>
+              <ul>
+                {positions.map((p, i) => (
+                  <li key={p.role} className={`grid grid-cols-[34px_1fr] gap-2 p-5 ${i ? 'border-t-2 border-dotted border-ink/30' : ''}`}>
+                    <span className="font-mono text-[13px] text-red">0{i + 1}</span>
+                    <div>
+                      <p className="display text-[22px]">{p.role}</p>
+                      <p className="mt-1 text-[15px] leading-relaxed text-ink-2">{p.text}</p>
                     </div>
-                  </Reveal>
+                  </li>
                 ))}
               </ul>
             </div>
-          </div>
-        </Reveal>
-
-        <footer className="mt-12 flex flex-col items-center justify-between gap-4 border-t border-line pt-8 text-[13.5px] text-faint sm:flex-row">
-          <p>© {new Date().getFullYear()} Jithu J George · {profile.location}</p>
-          <p className="font-mono text-[12px]">Built with React, Three.js and Motion</p>
-          <a href="#home" className="link-quiet !text-[13.5px]">Back to top ↑</a>
-        </footer>
+          </Reveal>
+        </div>
       </div>
+
+      <footer className="relative border-t-[2.5px] border-ink bg-ink text-paper-3">
+        <div className="page flex flex-col items-center justify-between gap-3 py-6 text-[13.5px] sm:flex-row">
+          <p>© {new Date().getFullYear()} Jithu J George · {profile.location}</p>
+          <p className="font-mono text-[12px]">A fan-made, original design inspired by pirate-adventure manga.</p>
+          <a href="#home" className="hover:text-sheet">Back to the top ↑</a>
+        </div>
+      </footer>
     </section>
   )
 }
