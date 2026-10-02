@@ -1,0 +1,7 @@
+node_modules
+dist
+*.local
+.DS_Store
+# Source resumes kept at the repo root; the published copies live in public/resume/
+/*.pdf
+*.tsbuildinfo

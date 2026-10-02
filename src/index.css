@@ -1,0 +1,227 @@
+@import 'tailwindcss';
+
+@theme {
+  --font-sans: 'Geist', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-mono: 'Geist Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+  --font-serif: 'Instrument Serif', ui-serif, Georgia, serif;
+
+  --color-canvas: #f7f8fb;
+  --color-surface: #ffffff;
+  --color-ink: #0c1222;
+  --color-ink-2: #2a3245;
+  --color-muted: #5a6478;
+  --color-faint: #8a93a6;
+  --color-line: rgb(15 23 42 / 0.08);
+  --color-line-strong: rgb(15 23 42 / 0.14);
+
+  --color-blue: #3d6bf5;
+  --color-blue-soft: #e6edff;
+  --color-violet: #7c6cf0;
+  --color-violet-soft: #efecff;
+  --color-teal: #0e9f8e;
+  --color-teal-soft: #e2f6f2;
+  --color-amber: #c27c0e;
+  --color-amber-soft: #fdf2dc;
+  --color-rose: #d9466f;
+  --color-rose-soft: #fde8ee;
+  --color-sky: #0b8bc4;
+  --color-sky-soft: #e0f3fb;
+
+  --shadow-card: 0 1px 2px rgb(15 23 42 / 0.04), 0 8px 24px -12px rgb(15 23 42 / 0.12);
+  --shadow-lift: 0 2px 4px rgb(15 23 42 / 0.04), 0 24px 48px -20px rgb(30 41 82 / 0.25);
+
+  --ease-out-quint: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 88px;
+    -webkit-text-size-adjust: 100%;
+  }
+  body {
+    background: var(--color-canvas);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    font-feature-settings: 'ss01', 'cv11';
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    overflow-x: hidden;
+  }
+  ::selection {
+    background: #d9e3ff;
+    color: var(--color-ink);
+  }
+  :focus-visible {
+    outline: 2px solid var(--color-blue);
+    outline-offset: 3px;
+    border-radius: 8px;
+  }
+  h1, h2, h3 {
+    letter-spacing: -0.025em;
+    text-wrap: balance;
+  }
+  p {
+    text-wrap: pretty;
+  }
+}
+
+@layer components {
+  .container-x {
+    width: 100%;
+    max-width: 1180px;
+    margin-inline: auto;
+    padding-inline: 20px;
+  }
+  @media (min-width: 768px) {
+    .container-x { padding-inline: 32px; }
+  }
+
+  .glass {
+    background: rgb(255 255 255 / 0.66);
+    backdrop-filter: blur(18px) saturate(1.4);
+    -webkit-backdrop-filter: blur(18px) saturate(1.4);
+    border: 1px solid rgb(255 255 255 / 0.7);
+    box-shadow: 0 0 0 1px var(--color-line), var(--shadow-card);
+  }
+
+  .card {
+    background: var(--color-surface);
+    border: 1px solid var(--color-line);
+    border-radius: 20px;
+    box-shadow: var(--shadow-card);
+  }
+
+  .eyebrow {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-muted);
+  }
+
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    border: 1px solid var(--color-line);
+    background: rgb(255 255 255 / 0.8);
+    border-radius: 999px;
+    padding: 4px 10px;
+    font-size: 12.5px;
+    color: var(--color-ink-2);
+    white-space: nowrap;
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    height: 46px;
+    padding-inline: 20px;
+    border-radius: 999px;
+    font-weight: 500;
+    font-size: 15px;
+    transition: transform 0.25s var(--ease-out-quint), box-shadow 0.25s var(--ease-out-quint), background-color 0.2s;
+    will-change: transform;
+  }
+  .btn:active { transform: scale(0.98); }
+  .btn-primary {
+    background: var(--color-ink);
+    color: white;
+    box-shadow: 0 1px 0 rgb(255 255 255 / 0.15) inset, 0 8px 20px -8px rgb(12 18 34 / 0.55);
+  }
+  .btn-primary:hover { background: #1b2337; transform: translateY(-1px); box-shadow: 0 1px 0 rgb(255 255 255 / 0.15) inset, 0 14px 28px -10px rgb(12 18 34 / 0.55); }
+  .btn-secondary {
+    background: white;
+    color: var(--color-ink);
+    box-shadow: 0 0 0 1px var(--color-line-strong), 0 4px 12px -6px rgb(15 23 42 / 0.12);
+  }
+  .btn-secondary:hover { transform: translateY(-1px); box-shadow: 0 0 0 1px var(--color-line-strong), 0 10px 22px -10px rgb(15 23 42 / 0.2); }
+
+  .link-quiet {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--color-muted);
+    font-size: 14px;
+    transition: color 0.2s;
+  }
+  .link-quiet:hover { color: var(--color-ink); }
+
+  .text-gradient {
+    background: linear-gradient(100deg, #2f5ff0 0%, #7c6cf0 55%, #0e9f8e 110%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  .section {
+    position: relative;
+    padding-block: 80px;
+  }
+  @media (min-width: 1024px) {
+    .section { padding-block: 112px; }
+  }
+
+  .grid-bg {
+    background-image:
+      linear-gradient(to right, rgb(15 23 42 / 0.045) 1px, transparent 1px),
+      linear-gradient(to bottom, rgb(15 23 42 / 0.045) 1px, transparent 1px);
+    background-size: 56px 56px;
+    mask-image: radial-gradient(ellipse at 50% 40%, black 20%, transparent 70%);
+  }
+
+  .noise::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.025;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  .marquee {
+    mask-image: linear-gradient(to right, transparent, black 12%, black 88%, transparent);
+  }
+  .marquee-track {
+    animation: marquee 38s linear infinite;
+  }
+  .marquee:hover .marquee-track { animation-play-state: paused; }
+
+  .flow-dash {
+    stroke-dasharray: 4 6;
+    animation: dash 1.6s linear infinite;
+  }
+}
+
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+@keyframes dash {
+  to { stroke-dashoffset: -20; }
+}
+
+dialog::backdrop {
+  background: rgb(15 23 42 / 0.28);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+  .marquee-track { animation: none; }
+}
+
+@keyframes travel {
+  from { offset-distance: 0%; }
+  to { offset-distance: 100%; }
+}
