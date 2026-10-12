@@ -1,4 +1,5 @@
 import { MotionConfig } from 'motion/react'
+import { useEffect } from 'react'
 import { About } from './components/About'
 import { Capabilities } from './components/Capabilities'
 import { Contact } from './components/Contact'
@@ -11,6 +12,9 @@ import { Projects } from './components/Projects'
 import { Skills } from './components/Skills'
 
 export default function App() {
+  // Tells the intro screen the app has mounted (safe to call twice under StrictMode).
+  useEffect(() => window.__appReady?.(), [])
+
   return (
     <MotionConfig reducedMotion="user">
       <Nav />

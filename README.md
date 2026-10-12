@@ -18,7 +18,8 @@ Live: https://jithu2001.github.io
 
 A fan-made, **original** design inspired by pirate-adventure manga (One Piece): a wanted poster, a sea chart, a ship's log and manga panels, printed in ink on newsprint with one red and one sea blue. It uses no official logos, characters or artwork from the series.
 
-- **Your photo:** add `public/portrait.jpg` (roughly square, with the face centred) and it replaces the ink drawing on the wanted poster automatically, with a sepia print filter applied.
+- **Living wanted poster:** `public/portrait.webm` and `portrait.mp4` are an 8-second seamless loop rendered from the portrait artwork (haki crackle, embers, sea sparkles and a manga impact beat). The colour grade is baked into the frames. `public/portrait.jpg` is its first frame, used as the video poster and as the still shown for reduced motion or Data Saver. If no media loads at all, the poster falls back to an ink drawing.
+- **Intro screen:** an inline CSS/SVG animation in `index.html` (`#intro`), not a video, so it paints with the first bytes of the page. The JJG seal stamps in, 出航 ("setting sail") appears, the name rises, and the ship sails across as real loading progresses (fonts, app mounted, portrait). It then splits along an inked diagonal while the hero animates in. The voyage takes about 3.2 s (paced by time, never ahead of real loading), holds briefly at 100%, exits at 7 s regardless, plays on every page load and is skipped entirely for reduced motion.
 - **Japanese text:** if you add or change any Japanese text, re-subset the fonts. Every Japanese character in `src/` must be included in the two `&text=` font URLs in `index.html`.
 
 There are no environment variables and no backend. The GitHub activity strip calls the public GitHub API from the browser, caches the result in `sessionStorage`, and falls back to a built-in snapshot if the API is unavailable or rate-limited.
@@ -71,6 +72,7 @@ src/
 
 ## Performance & accessibility notes
 
+- **Fonts don't block rendering:** Google Fonts load via `preload` + swap, so the intro and page paint before font files arrive.
 - **No WebGL.** All depth comes from CSS 3D transforms. Initial JS is about 138 KB gzipped (React + Motion).
 - **Reduced motion:** with `prefers-reduced-motion`, poster sway and tilt, marquee and reveal motion are turned off, and the content stays complete.
 - **Keyboard:** skip link, visible focus, an arrow-key tablist for the sea-chart islands, and a native `<dialog>` for project case files (Esc closes it and focus returns to the trigger).
