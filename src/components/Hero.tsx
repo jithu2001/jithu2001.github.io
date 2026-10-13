@@ -1,6 +1,7 @@
 import { motion, useReducedMotion } from 'motion/react'
-import { useRef, useState, type PointerEvent } from 'react'
+import { useEffect, useRef, useState, type PointerEvent } from 'react'
 import { clients, heroStats, profile } from '../data/content'
+import { useIntroDone } from '../hooks/useIntroDone'
 import { ArrowRight, Download, GitHub, LinkedIn } from './Icons'
 
 const ease = [0.22, 1, 0.36, 1] as const
@@ -9,6 +10,8 @@ export function Hero() {
   const reduced = useReducedMotion()
   const poster = useRef<HTMLDivElement>(null)
   const [tilting, setTilting] = useState(false)
+  // Hold the entrance until the intro screen starts to split.
+  const go = useIntroDone()
 
   // Real 3D: the poster tilts toward the cursor and its layers sit at different depths.
   const onMove = (e: PointerEvent<HTMLElement>) => {
@@ -29,7 +32,7 @@ export function Hero() {
       <div className="page grid items-center gap-14 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,0.85fr)] lg:gap-10">
         {/* Copy */}
         <div className="relative z-10">
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.6 }} className="flex flex-wrap items-center gap-x-5 gap-y-2">
+          <motion.div initial={{ opacity: 0 }} animate={go ? { opacity: 1 } : undefined} transition={{ duration: 0.6 }} className="flex flex-wrap items-center gap-x-5 gap-y-2">
             <span className="label text-ink">Vol. 01 · The end-to-end engineer</span>
             <span className="label flex items-center gap-2 text-muted">
               <span className="h-2 w-2 rounded-full bg-red" aria-hidden /> Open to FDE, backend, product & freelance
@@ -40,17 +43,17 @@ export function Hero() {
             <span className="sr-only">Jithu J George: </span>
             {['I build software,', 'ship it, and make', 'sure people'].map((l, i) => (
               <span key={l} className="block overflow-hidden pb-[0.04em]">
-                <motion.span className="block" initial={{ y: '105%' }} animate={{ y: 0 }} transition={{ duration: 0.9, delay: 0.1 + i * 0.08, ease }}>{l}</motion.span>
+                <motion.span className="block" initial={{ y: '105%' }} animate={go ? { y: 0 } : undefined} transition={{ duration: 0.9, delay: 0.1 + i * 0.08, ease }}>{l}</motion.span>
               </span>
             ))}
             <span className="block overflow-hidden pb-[0.06em]">
-              <motion.span className="block text-red" initial={{ y: '105%' }} animate={{ y: 0 }} transition={{ duration: 0.9, delay: 0.34, ease }}>
+              <motion.span className="block text-red" initial={{ y: '105%' }} animate={go ? { y: 0 } : undefined} transition={{ duration: 0.9, delay: 0.34, ease }}>
                 actually use it.
               </motion.span>
             </span>
           </h1>
 
-          <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.5, ease }} className="mt-8 grid max-w-xl gap-8 sm:grid-cols-[3px_1fr] sm:gap-5">
+          <motion.div initial={{ opacity: 0, y: 12 }} animate={go ? { opacity: 1, y: 0 } : undefined} transition={{ duration: 0.8, delay: 0.5, ease }} className="mt-8 grid max-w-xl gap-8 sm:grid-cols-[3px_1fr] sm:gap-5">
             <span aria-hidden className="hidden bg-ink sm:block" />
             <p className="text-[18px] leading-[1.6] text-ink-2">
               I'm <strong className="font-semibold text-ink">Jithu J George</strong>, a software engineer with 3+ years taking Go backends and
@@ -59,14 +62,14 @@ export function Hero() {
             </p>
           </motion.div>
 
-          <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.6, ease }} className="mt-9 flex flex-col gap-4 sm:flex-row">
+          <motion.div initial={{ opacity: 0, y: 12 }} animate={go ? { opacity: 1, y: 0 } : undefined} transition={{ duration: 0.8, delay: 0.6, ease }} className="mt-9 flex flex-col gap-4 sm:flex-row">
             <a href="#projects" className="btn btn-red group">
               View my work <ArrowRight className="transition-transform duration-300 group-hover:translate-x-1" />
             </a>
             <a href="#contact" className="btn btn-paper">Let's work together</a>
           </motion.div>
 
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.8, delay: 0.75 }} className="mt-8 flex flex-wrap gap-x-7 gap-y-3 text-[15px] font-medium">
+          <motion.div initial={{ opacity: 0 }} animate={go ? { opacity: 1 } : undefined} transition={{ duration: 0.8, delay: 0.75 }} className="mt-8 flex flex-wrap gap-x-7 gap-y-3 text-[15px] font-medium">
             <a className="ink-link flex items-center gap-2" href={profile.github} target="_blank" rel="noreferrer"><GitHub /> GitHub</a>
             <a className="ink-link flex items-center gap-2" href={profile.linkedin} target="_blank" rel="noreferrer"><LinkedIn /> LinkedIn</a>
             <a className="ink-link flex items-center gap-2" href={profile.resume} download><Download /> Resume</a>
@@ -76,7 +79,7 @@ export function Hero() {
         {/* Poster */}
         <motion.div
           initial={{ opacity: 0, y: -40, rotate: -8 }}
-          animate={{ opacity: 1, y: 0, rotate: -3 }}
+          animate={go ? { opacity: 1, y: 0, rotate: -3 } : undefined}
           transition={{ type: 'spring', stiffness: 70, damping: 13, delay: 0.25 }}
           className="relative mx-auto w-full max-w-[400px] lg:max-w-[440px]"
           style={{ perspective: 1100 }}
@@ -100,7 +103,7 @@ export function Hero() {
             <motion.div
               key={s.label}
               initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
+              animate={go ? { opacity: 1 } : undefined}
               transition={{ delay: 0.8 + i * 0.07 }}
               className={`px-5 py-5 sm:px-7 sm:py-6 ${i % 2 ? 'border-l-[2.5px] border-ink' : ''} ${i > 1 ? 'border-t-[2.5px] border-ink lg:border-t-0' : ''} ${i === 2 ? 'lg:border-l-[2.5px]' : ''}`}
             >
@@ -133,7 +136,6 @@ export function Hero() {
 }
 
 function WantedPoster() {
-  const [photo, setPhoto] = useState(true)
   return (
     <figure
       className="relative border-[2.5px] border-ink bg-[#ead7ad] p-5 [transform-style:preserve-3d] shadow-[10px_12px_0_var(--color-ink)] sm:p-7"
@@ -146,11 +148,7 @@ function WantedPoster() {
       <p className="text-center font-poster text-[58px] leading-none tracking-[0.06em] text-ink sm:text-[72px]" style={{ transform: 'translateZ(30px)' }}>WANTED</p>
 
       <div className="relative mt-4 aspect-[5/4] overflow-hidden border-[3px] border-ink bg-[#f3e5c4]" style={{ transform: 'translateZ(18px)' }}>
-        {photo ? (
-          <img src="/portrait.jpg" alt="Jithu J George drawn in a pirate-anime style" width={800} height={640} decoding="async" className="h-full w-full object-cover [filter:sepia(.22)_saturate(.92)_contrast(1.04)]" onError={() => setPhoto(false)} />
-        ) : (
-          <Portrait />
-        )}
+        <LivingPortrait />
       </div>
 
       <div className="mt-4 flex items-center gap-3" style={{ transform: 'translateZ(24px)' }}>
@@ -173,6 +171,55 @@ function WantedPoster() {
         Backend · FDE<br />Product · AI
       </span>
     </figure>
+  )
+}
+
+const ALT = 'Jithu J George drawn in a pirate-anime style'
+
+// The poster "comes alive": an 8s seamless loop (haki crackle, embers, a manga impact beat).
+// Reduced motion / data saver get the still frame; any failure falls back to the image, then the ink drawing.
+function LivingPortrait() {
+  const reduced = useReducedMotion()
+  const video = useRef<HTMLVideoElement>(null)
+  const [mode, setMode] = useState<'video' | 'image' | 'ink'>('video')
+
+  useEffect(() => {
+    const saveData = (navigator as Navigator & { connection?: { saveData?: boolean } }).connection?.saveData
+    if (reduced || saveData) setMode((m) => (m === 'video' ? 'image' : m))
+  }, [reduced])
+
+  // Only play while the poster is on screen.
+  useEffect(() => {
+    const v = video.current
+    if (mode !== 'video' || !v) return
+    const io = new IntersectionObserver(([e]) => {
+      if (e.isIntersecting) v.play().catch(() => setMode('image'))
+      else v.pause()
+    })
+    io.observe(v)
+    return () => io.disconnect()
+  }, [mode])
+
+  if (mode === 'ink') return <Portrait />
+  if (mode === 'image') {
+    return <img src="/portrait.jpg" alt={ALT} width={800} height={640} decoding="async" className="h-full w-full object-cover" onError={() => setMode('ink')} />
+  }
+  return (
+    <video
+      ref={video}
+      className="h-full w-full object-cover"
+      poster="/portrait.jpg"
+      muted
+      loop
+      playsInline
+      preload="auto"
+      aria-label={`${ALT}, animated`}
+      width={800}
+      height={640}
+    >
+      <source src="/portrait.webm" type="video/webm" />
+      <source src="/portrait.mp4" type="video/mp4" onError={() => setMode('image')} />
+    </video>
   )
 }
 
